@@ -52,6 +52,71 @@
             font-weight: bold;
         }
 
+        /* Timer */
+        .timer-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ef4444;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+
+        .timer-container.warning {
+            background: #f59e0b;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Login Admin */
+        .admin-login {
+            display: none;
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .admin-login h2 {
+            color: #059669;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .admin-login input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .admin-login input:focus {
+            outline: none;
+            border-color: #059669;
+        }
+
+        .admin-login .error {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
         .content {
             padding: 30px;
         }
@@ -207,12 +272,22 @@
             padding: 25px;
             cursor: pointer;
             transition: all 0.3s;
+            position: relative;
         }
 
         .module-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
             border-color: #059669;
+        }
+
+        .module-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .module-card.locked:hover {
+            transform: none;
         }
 
         .module-card h3 {
@@ -248,6 +323,12 @@
         .status-failed {
             background: #ef4444;
             color: white;
+        }
+
+        .attempts-info {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 8px;
         }
 
         .welcome-box {
@@ -315,6 +396,12 @@
             box-shadow: 0 5px 15px rgba(5, 150, 105, 0.4);
         }
 
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .btn-secondary {
             background: #6b7280;
         }
@@ -329,6 +416,14 @@
 
         .btn-copy:hover {
             background: #2563eb;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
         }
 
         /* Seções ocultas */
@@ -445,6 +540,31 @@
             margin: 20px 0;
         }
 
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 2px solid #f59e0b;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 2px solid #ef4444;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 2px solid #3b82f6;
+        }
+
         @media print {
             body {
                 background: white;
@@ -452,7 +572,7 @@
             .container {
                 box-shadow: none;
             }
-            .btn, .score, .btn-back, .admin-panel {
+            .btn, .score, .btn-back, .admin-panel, .timer-container {
                 display: none;
             }
         }
@@ -464,10 +584,21 @@
             .content {
                 padding: 20px;
             }
+            .timer-container {
+                top: 10px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Timer -->
+    <div id="timerContainer" class="timer-container">
+        <span id="timerDisplay">30:00</span>
+    </div>
+
     <div class="container">
         <div class="header">
             <div class="admin-badge" id="adminBadge" style="display: none;">🔧 MODO ADMIN</div>
@@ -476,6 +607,14 @@
         </div>
 
         <div class="content">
+            <!-- Login Admin -->
+            <div id="admin-login" class="admin-login">
+                <h2>🔐 Acesso Administrativo</h2>
+                <input type="password" id="adminPassword" placeholder="Digite a senha" onkeypress="if(event.key==='Enter') checkAdminPassword()">
+                <div class="error" id="loginError">❌ Senha incorreta!</div>
+                <button class="btn" style="width: 100%;" onclick="checkAdminPassword()">Entrar</button>
+            </div>
+
             <!-- PAINEL ADMIN -->
             <div id="admin-panel" class="admin-panel">
                 <h2>🔧 Painel Administrativo - Gerador de Links</h2>
@@ -514,7 +653,7 @@
                 </div>
 
                 <button class="btn" onclick="generateAdminLink()">🚀 Gerar Link do Treinamento</button>
-                <button class="btn btn-secondary" onclick="toggleAdmin()">❌ Fechar Painel Admin</button>
+                <button class="btn btn-secondary" onclick="logout()">🚪 Sair</button>
 
                 <div id="generatedLinkBox" class="generated-link-box">
                     <h4>✅ Link Gerado com Sucesso!</h4>
@@ -543,13 +682,16 @@
             <div id="training-section" class="training-section">
                 <button class="btn btn-back" onclick="backToDashboard()">← Voltar aos Módulos</button>
                 <div id="trainingContent"></div>
-                <button class="btn" onclick="startQuiz()">Iniciar Avaliação (10 questões)</button>
+                <div id="attemptsWarning"></div>
+                <button class="btn" id="startQuizBtn" onclick="confirmStartQuiz()">Iniciar Avaliação (10 questões - 30 minutos)</button>
             </div>
 
             <!-- Quiz Section -->
             <div id="quiz-section" class="quiz-section">
-                <button class="btn btn-back" onclick="backToTraining()">← Voltar ao Conteúdo</button>
-                <h2 style="color: #059669; margin-bottom: 20px;">Avaliação</h2>
+                <div class="alert alert-warning">
+                    ⚠️ <strong>Atenção:</strong> A prova está em andamento. Você não pode voltar até finalizar. Tempo: <span id="quizTimer">30:00</span>
+                </div>
+                <h2 style="color: #059669; margin-bottom: 20px;">Avaliação em Andamento</h2>
                 <p style="margin-bottom: 20px; color: #6b7280;"><strong>Responda as 10 questões. Você precisa acertar no mínimo 6 para ser aprovado.</strong></p>
                 <div id="quizContent"></div>
                 <button class="btn" onclick="submitQuiz()">Enviar Respostas</button>
@@ -562,7 +704,7 @@
                 <p id="feedback" style="font-size: 20px; margin: 20px 0;"></p>
                 <div id="certificate-container"></div>
                 <div>
-                    <button class="btn" onclick="window.print()">🖨️ Imprimir Certificado</button>
+                    <button class="btn" onclick="window.print()" id="printBtn" style="display:none;">🖨️ Imprimir Certificado</button>
                     <button class="btn btn-secondary" onclick="backToDashboard()">← Voltar aos Módulos</button>
                 </div>
             </div>
@@ -570,7 +712,10 @@
     </div>
 
     <script>
-        // Configuração dos módulos (mesmo código anterior, mantido igual)
+        // SENHA DO ADMIN
+        const ADMIN_PASSWORD = "fiducia2025"; // MUDE ESTA SENHA!
+
+        // Configuração dos módulos (mantido igual ao anterior por enquanto)
         const trainingModules = {
             'abertura_contas': {
                 title: 'Abertura de Contas',
@@ -757,6 +902,23 @@
         let companyName = '';
         let isAdminMode = false;
         let generatedLink = '';
+        let quizInProgress = false;
+        let timerInterval = null;
+        let timeRemaining = 1800; // 30 minutos em segundos
+
+        // Constantes
+        const MAX_ATTEMPTS = 3;
+        const QUIZ_TIME_MINUTES = 30;
+
+        // Função para embaralhar array (Fisher-Yates)
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
 
         // Inicialização
         function init() {
@@ -768,7 +930,8 @@
             // Verificar modo admin
             if (adminParam === 'true') {
                 isAdminMode = true;
-                showAdminPanel();
+                showAdminLogin();
+                return;
             }
 
             if (modulesParam) {
@@ -783,9 +946,30 @@
                 userProgress = JSON.parse(savedProgress);
             }
 
-            if (!isAdminMode) {
-                loadDashboard();
+            loadDashboard();
+        }
+
+        // Mostrar login admin
+        function showAdminLogin() {
+            document.getElementById('admin-login').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+        }
+
+        // Verificar senha admin
+        function checkAdminPassword() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('admin-login').style.display = 'none';
+                showAdminPanel();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('adminPassword').value = '';
             }
+        }
+
+        // Logout
+        function logout() {
+            window.location.href = window.location.pathname;
         }
 
         // Mostrar painel admin
@@ -794,7 +978,6 @@
             document.getElementById('adminBadge').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
 
-            // Criar checkboxes dos módulos
             const container = document.getElementById('adminModulesCheckbox');
             container.innerHTML = '';
             
@@ -810,27 +993,9 @@
             });
         }
 
-        // Toggle admin panel
-        function toggleAdmin() {
-            const panel = document.getElementById('admin-panel');
-            const dashboard = document.getElementById('dashboard');
-            
-            if (panel.style.display === 'none') {
-                panel.style.display = 'block';
-                dashboard.style.display = 'none';
-            } else {
-                panel.style.display = 'none';
-                dashboard.style.display = 'block';
-                loadDashboard();
-            }
-        }
-
         // Aplicar template
         function applyTemplate(type) {
-            // Desmarcar todos
             document.querySelectorAll('#adminModulesCheckbox input').forEach(cb => cb.checked = false);
-            
-            // Marcar os do template
             profileTemplates[type].forEach(moduleId => {
                 const checkbox = document.getElementById(`admin_${moduleId}`);
                 if (checkbox) checkbox.checked = true;
@@ -862,8 +1027,6 @@
 
             document.getElementById('generatedLinkDisplay').textContent = generatedLink;
             document.getElementById('generatedLinkBox').style.display = 'block';
-            
-            // Scroll para o resultado
             document.getElementById('generatedLinkBox').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -896,15 +1059,24 @@
                 
                 let statusClass = 'status-pending';
                 let statusText = 'Pendente';
+                let attemptsText = '';
                 
+                const attempts = userProgress[moduleId]?.attempts || 0;
+                const remainingAttempts = MAX_ATTEMPTS - attempts;
+
                 if (userProgress[moduleId]) {
                     if (userProgress[moduleId].passed) {
                         statusClass = 'status-completed';
                         statusText = `Concluído - ${userProgress[moduleId].score}/10`;
                         completed++;
+                    } else if (attempts >= MAX_ATTEMPTS) {
+                        statusClass = 'status-failed';
+                        statusText = `Reprovado - Tentativas esgotadas`;
+                        card.classList.add('locked');
                     } else {
                         statusClass = 'status-failed';
                         statusText = `Não aprovado - ${userProgress[moduleId].score}/10`;
+                        attemptsText = `<div class="attempts-info">⚠️ ${remainingAttempts} tentativa(s) restante(s)</div>`;
                     }
                 }
 
@@ -912,9 +1084,12 @@
                     <h3>${module.title}</h3>
                     <p>${module.description}</p>
                     <span class="module-status ${statusClass}">${statusText}</span>
+                    ${attemptsText}
                 `;
                 
-                card.onclick = () => loadTraining(moduleId);
+                if (!card.classList.contains('locked')) {
+                    card.onclick = () => loadTraining(moduleId);
+                }
                 grid.appendChild(card);
             });
 
@@ -940,26 +1115,73 @@
                 `;
             });
 
+            // Mostrar aviso de tentativas
+            const attempts = userProgress[moduleId]?.attempts || 0;
+            const remainingAttempts = MAX_ATTEMPTS - attempts;
+            const warningDiv = document.getElementById('attemptsWarning');
+            
+            if (attempts > 0 && !userProgress[moduleId]?.passed) {
+                warningDiv.innerHTML = `
+                    <div class="alert alert-warning">
+                        ⚠️ Você já tentou esta avaliação ${attempts} vez(es). Restam ${remainingAttempts} tentativa(s).
+                    </div>
+                `;
+            } else {
+                warningDiv.innerHTML = '';
+            }
+
             document.getElementById('dashboard').style.display = 'none';
             document.getElementById('training-section').style.display = 'block';
             window.scrollTo(0, 0);
         }
 
+        // Confirmar início da prova
+        function confirmStartQuiz() {
+            const attempts = userProgress[currentModule]?.attempts || 0;
+            const remainingAttempts = MAX_ATTEMPTS - attempts;
+
+            if (attempts >= MAX_ATTEMPTS) {
+                alert('❌ Você esgotou todas as tentativas para este módulo.');
+                return;
+            }
+
+            const confirmed = confirm(
+                `⚠️ ATENÇÃO!\n\n` +
+                `• Você tem ${QUIZ_TIME_MINUTES} minutos para completar a prova\n` +
+                `• Após iniciar, NÃO poderá voltar até finalizar\n` +
+                `• Esta é sua tentativa ${attempts + 1} de ${MAX_ATTEMPTS}\n` +
+                `• As perguntas serão apresentadas em ordem aleatória\n\n` +
+                `Deseja iniciar a avaliação agora?`
+            );
+
+            if (confirmed) {
+                startQuiz();
+            }
+        }
+
         // Iniciar Quiz
         function startQuiz() {
+            quizInProgress = true;
             const module = trainingModules[currentModule];
             const quizContent = document.getElementById('quizContent');
             quizContent.innerHTML = '';
 
-            module.questions.forEach((q, index) => {
+            // Embaralhar perguntas
+            const shuffledQuestions = shuffleArray(module.questions);
+
+            shuffledQuestions.forEach((q, index) => {
+                // Embaralhar opções mas manter track da resposta correta
+                const optionsWithIndex = q.options.map((opt, i) => ({ text: opt, isCorrect: i === q.correct }));
+                const shuffledOptions = shuffleArray(optionsWithIndex);
+                
                 quizContent.innerHTML += `
                     <div class="question">
                         <h3>${index + 1}. ${q.question}</h3>
                         <div class="options">
-                            ${q.options.map((option, i) => `
+                            ${shuffledOptions.map((option, i) => `
                                 <label class="option">
-                                    <input type="radio" name="q${index}" value="${i}">
-                                    ${option}
+                                    <input type="radio" name="q${index}" value="${option.isCorrect ? '1' : '0'}">
+                                    ${option.text}
                                 </label>
                             `).join('')}
                         </div>
@@ -967,28 +1189,92 @@
                 `;
             });
 
+            // Iniciar timer
+            startTimer();
+
             document.getElementById('training-section').style.display = 'none';
             document.getElementById('quiz-section').style.display = 'block';
             window.scrollTo(0, 0);
+
+            // Prevenir saída da página
+            window.onbeforeunload = function() {
+                if (quizInProgress) {
+                    return "A prova está em andamento. Se sair, perderá esta tentativa.";
+                }
+            };
+        }
+
+        // Timer
+        function startTimer() {
+            timeRemaining = QUIZ_TIME_MINUTES * 60;
+            document.getElementById('timerContainer').style.display = 'block';
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+
+                // Aviso quando faltar 5 minutos
+                if (timeRemaining === 300) {
+                    document.getElementById('timerContainer').classList.add('warning');
+                    alert('⏰ Atenção! Restam apenas 5 minutos!');
+                }
+
+                // Tempo esgotado
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    alert('⏰ Tempo esgotado! A prova será enviada automaticamente.');
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
+            document.getElementById('quizTimer').textContent = display;
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            document.getElementById('timerContainer').style.display = 'none';
+            document.getElementById('timerContainer').classList.remove('warning');
+            quizInProgress = false;
+            window.onbeforeunload = null;
         }
 
         // Enviar Quiz
         function submitQuiz() {
+            stopTimer();
+
             const module = trainingModules[currentModule];
             let score = 0;
+            const totalQuestions = 10;
 
-            module.questions.forEach((q, index) => {
-                const answer = document.querySelector(`input[name="q${index}"]:checked`);
-                if (answer && parseInt(answer.value) === q.correct) {
+            // Contar respostas corretas
+            for (let i = 0; i < totalQuestions; i++) {
+                const answer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (answer && answer.value === "1") {
                     score++;
                 }
-            });
+            }
 
             const passed = score >= 6;
 
+            // Atualizar tentativas
+            const currentAttempts = userProgress[currentModule]?.attempts || 0;
+
+            // Salvar progresso
             userProgress[currentModule] = {
                 score: score,
                 passed: passed,
+                attempts: currentAttempts + 1,
+                lastAttempt: new Date().toISOString(),
                 date: new Date().toLocaleDateString('pt-BR')
             };
 
@@ -997,6 +1283,7 @@
             const storageKey = `training_progress_${modulesParam || 'default'}`;
             localStorage.setItem(storageKey, JSON.stringify(userProgress));
 
+            // Mostrar resultado
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('result-section').style.display = 'block';
             document.getElementById('score').textContent = `${score}/10`;
@@ -1004,11 +1291,18 @@
             let feedback = '';
             let certificateHTML = '';
 
+            const remainingAttempts = MAX_ATTEMPTS - userProgress[currentModule].attempts;
+
             if (passed) {
                 feedback = '🎉 Parabéns! Você foi aprovado neste módulo!';
                 certificateHTML = generateCertificate(score);
+                document.getElementById('printBtn').style.display = 'inline-block';
+            } else if (remainingAttempts > 0) {
+                feedback = `📚 Você não atingiu a nota mínima (6 acertos). Você ainda tem ${remainingAttempts} tentativa(s). Revise o conteúdo e tente novamente.`;
+                document.getElementById('printBtn').style.display = 'none';
             } else {
-                feedback = '📚 Você não atingiu a nota mínima (6 acertos). Revise o conteúdo e tente novamente.';
+                feedback = '❌ Você não atingiu a nota mínima e esgotou todas as tentativas para este módulo.';
+                document.getElementById('printBtn').style.display = 'none';
             }
 
             document.getElementById('feedback').textContent = feedback;
@@ -1038,6 +1332,12 @@
 
         // Navegação
         function backToDashboard() {
+            if (quizInProgress) {
+                alert('⚠️ Você precisa finalizar a prova antes de voltar!');
+                return;
+            }
+
+            stopTimer();
             document.getElementById('training-section').style.display = 'none';
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('result-section').style.display = 'none';
@@ -1047,6 +1347,10 @@
         }
 
         function backToTraining() {
+            if (quizInProgress) {
+                alert('⚠️ Você não pode voltar durante a prova!');
+                return;
+            }
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('training-section').style.display = 'block';
             window.scrollTo(0, 0);
