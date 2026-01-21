@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Treinamento Fidúcia</title>
+    <title>Fidúcia Academy - Sistema de Treinamento</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
@@ -32,6 +32,7 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
         }
 
         .header h1 {
@@ -39,11 +40,159 @@
             margin-bottom: 10px;
         }
 
-        .content {
-            padding: 40px;
+        .admin-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fbbf24;
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        /* Dashboard */
+        .content {
+            padding: 30px;
+        }
+
+        /* PAINEL ADMIN */
+        .admin-panel {
+            display: none;
+            background: #f0fdf4;
+            border: 2px solid #059669;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .admin-panel h2 {
+            color: #059669;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .admin-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .admin-section h3 {
+            color: #047857;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #059669;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f9fafb;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkbox-item:hover {
+            background: #d1fae5;
+        }
+
+        .checkbox-item input {
+            margin-right: 8px;
+            cursor: pointer;
+            width: auto;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .template-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .template-btn {
+            padding: 12px;
+            background: white;
+            border: 2px solid #059669;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+            color: #059669;
+        }
+
+        .template-btn:hover {
+            background: #059669;
+            color: white;
+        }
+
+        .generated-link-box {
+            display: none;
+            background: #dbeafe;
+            border: 2px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .generated-link-box h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .link-display {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin-bottom: 15px;
+            border: 1px solid #93c5fd;
+        }
+
+        /* Dashboard Normal */
         .modules-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -52,8 +201,8 @@
         }
 
         .module-card {
-            background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
-            border: 2px solid #ddd;
+            background: linear-gradient(to bottom right, #f0fdf4, #dcfce7);
+            border: 2px solid #bbf7d0;
             border-radius: 12px;
             padding: 25px;
             cursor: pointer;
@@ -73,7 +222,7 @@
         }
 
         .module-card p {
-            color: #666;
+            color: #047857;
             font-size: 14px;
             margin-bottom: 15px;
         }
@@ -87,27 +236,110 @@
         }
 
         .status-pending {
-            background: #ffc107;
+            background: #fbbf24;
             color: #000;
         }
 
         .status-completed {
-            background: #28a745;
+            background: #10b981;
             color: white;
         }
 
         .status-failed {
-            background: #dc3545;
+            background: #ef4444;
             color: white;
         }
 
-        /* Training Content */
-        .training-section {
+        .welcome-box {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #059669;
+            border-radius: 12px;
+            padding: 18px 25px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
+        }
+
+        .welcome-box h2 {
+            color: #059669;
+            margin-bottom: 8px;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .welcome-box p {
+            color: #047857;
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #059669 0%, #047857 100%);
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #047857;
+            font-size: 14px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            margin: 5px;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(5, 150, 105, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-copy {
+            background: #3b82f6;
+        }
+
+        .btn-copy:hover {
+            background: #2563eb;
+        }
+
+        /* Seções ocultas */
+        .training-section,
+        .quiz-section,
+        .result-section {
             display: none;
         }
 
         .lesson {
-            background: #f8f9fa;
+            background: #f0fdf4;
             padding: 25px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -122,17 +354,12 @@
 
         .lesson p {
             line-height: 1.8;
-            color: #333;
+            color: #1f2937;
             margin-bottom: 10px;
         }
 
-        /* Quiz Section */
-        .quiz-section {
-            display: none;
-        }
-
         .question {
-            background: #f8f9fa;
+            background: #f0fdf4;
             padding: 25px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -140,7 +367,7 @@
         }
 
         .question h3 {
-            color: #333;
+            color: #1f2937;
             margin-bottom: 15px;
             font-size: 18px;
         }
@@ -154,7 +381,7 @@
         .option {
             padding: 12px 20px;
             background: white;
-            border: 2px solid #ddd;
+            border: 2px solid #d1d5db;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
@@ -162,17 +389,16 @@
 
         .option:hover {
             border-color: #059669;
-            background: #f0fdf4;
+            background: #d1fae5;
         }
 
         .option input {
             margin-right: 10px;
         }
 
-        /* Result Section */
-        .result-section {
-            display: none;
-            text-align: center;
+        .btn-back {
+            background: #6b7280;
+            margin-bottom: 20px;
         }
 
         .score {
@@ -186,7 +412,7 @@
             border: 3px solid #059669;
             padding: 40px;
             margin: 30px 0;
-            background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+            background: linear-gradient(to bottom, #ffffff 0%, #f0fdf4 100%);
             position: relative;
         }
 
@@ -219,77 +445,6 @@
             margin: 20px 0;
         }
 
-        /* Buttons */
-        .btn {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            display: inline-block;
-            margin: 10px 5px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(5, 150, 105, 0.4);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-        }
-
-        .btn-back {
-            background: #6c757d;
-            margin-bottom: 20px;
-        }
-
-        .progress-bar {
-            background: #e9ecef;
-            height: 8px;
-            border-radius: 4px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #059669 0%, #047857 100%);
-            height: 100%;
-            transition: width 0.3s;
-        }
-
-        .progress-text {
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-            margin-top: 5px;
-            font-weight: bold;
-        }
-
-        .welcome-box {
-            background: #d1fae5;
-            border: 2px solid #059669;
-            border-radius: 10px;
-            padding: 20px 30px;  
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .welcome-box h2 {
-            color: #059669;
-            margin-bottom: 8px;
-            font-size: 22px;
-        }
-
-        .welcome-box p {
-            color: #666;
-            margin: 0;
-            font-size: 15px;
-        }
-
         @media print {
             body {
                 background: white;
@@ -297,7 +452,7 @@
             .container {
                 box-shadow: none;
             }
-            .btn, .score, .btn-back {
+            .btn, .score, .btn-back, .admin-panel {
                 display: none;
             }
         }
@@ -307,7 +462,7 @@
                 grid-template-columns: 1fr;
             }
             .content {
-                padding: 25px;
+                padding: 20px;
             }
         }
     </style>
@@ -315,12 +470,61 @@
 <body>
     <div class="container">
         <div class="header">
+            <div class="admin-badge" id="adminBadge" style="display: none;">🔧 MODO ADMIN</div>
             <h1>🎓 Fidúcia Academy</h1>
-            <p>Plataforma destinada para aprimorar suas competências na utilização de serviços financeiros.</p>
+            <p>Bem-vindo a plataforma de treinamento dos produtos Fidúcia, complete ele todo e obtenha seu certificado</p>
         </div>
 
         <div class="content">
-            <!-- Dashboard -->
+            <!-- PAINEL ADMIN -->
+            <div id="admin-panel" class="admin-panel">
+                <h2>🔧 Painel Administrativo - Gerador de Links</h2>
+                
+                <div class="admin-section">
+                    <h3>1️⃣ Templates Rápidos</h3>
+                    <div class="template-buttons">
+                        <button class="template-btn" onclick="applyTemplate('completo')">
+                            🎯 Completo (Todos)
+                        </button>
+                        <button class="template-btn" onclick="applyTemplate('atendimento')">
+                            👥 Atendimento
+                        </button>
+                        <button class="template-btn" onclick="applyTemplate('credito')">
+                            💰 Crédito
+                        </button>
+                        <button class="template-btn" onclick="applyTemplate('backoffice')">
+                            📊 Back Office
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <h3>2️⃣ Selecione os Módulos</h3>
+                    <div class="checkbox-grid" id="adminModulesCheckbox"></div>
+                </div>
+
+                <div class="admin-section">
+                    <h3>3️⃣ Nome da Empresa (Opcional)</h3>
+                    <div class="form-group">
+                        <input type="text" id="adminCompanyName" placeholder="Ex: Banco ABC Ltda">
+                        <small style="color: #6b7280; display: block; margin-top: 5px;">
+                            Este nome aparecerá no certificado. Se deixar vazio, aparece "a empresa".
+                        </small>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="generateAdminLink()">🚀 Gerar Link do Treinamento</button>
+                <button class="btn btn-secondary" onclick="toggleAdmin()">❌ Fechar Painel Admin</button>
+
+                <div id="generatedLinkBox" class="generated-link-box">
+                    <h4>✅ Link Gerado com Sucesso!</h4>
+                    <div class="link-display" id="generatedLinkDisplay"></div>
+                    <button class="btn btn-copy" onclick="copyGeneratedLink()">📋 Copiar Link</button>
+                    <button class="btn btn-secondary" onclick="testGeneratedLink()">🔍 Testar Link</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Normal -->
             <div id="dashboard">
                 <div class="welcome-box">
                     <h2>Bem-vindo!</h2>
@@ -346,7 +550,7 @@
             <div id="quiz-section" class="quiz-section">
                 <button class="btn btn-back" onclick="backToTraining()">← Voltar ao Conteúdo</button>
                 <h2 style="color: #059669; margin-bottom: 20px;">Avaliação</h2>
-                <p style="margin-bottom: 20px; color: #666;"><strong>Responda as 10 questões. Você precisa acertar no mínimo 6 para ser aprovado.</strong></p>
+                <p style="margin-bottom: 20px; color: #6b7280;"><strong>Responda as 10 questões. Você precisa acertar no mínimo 6 para ser aprovado.</strong></p>
                 <div id="quizContent"></div>
                 <button class="btn" onclick="submitQuiz()">Enviar Respostas</button>
             </div>
@@ -358,576 +562,192 @@
                 <p id="feedback" style="font-size: 20px; margin: 20px 0;"></p>
                 <div id="certificate-container"></div>
                 <div>
-                    <button class="btn" onclick="window.print()">Imprimir Certificado</button>
-                    <button class="btn btn-secondary" onclick="backToDashboard()">Voltar aos Módulos</button>
+                    <button class="btn" onclick="window.print()">🖨️ Imprimir Certificado</button>
+                    <button class="btn btn-secondary" onclick="backToDashboard()">← Voltar aos Módulos</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuração dos módulos de treinamento
+        // Configuração dos módulos (mesmo código anterior, mantido igual)
         const trainingModules = {
             'abertura_contas': {
                 title: 'Abertura de Contas',
                 description: 'Processo completo de abertura de contas',
                 content: [
-                    {
-                        title: 'Documentação Necessária',
-                        text: 'Para abrir uma conta, é essencial verificar a documentação completa do cliente. Os documentos básicos incluem RG, CPF, comprovante de residência atualizado e comprovante de renda.'
-                    },
-                    {
-                        title: 'Processo de Cadastro',
-                        text: 'O cadastro deve ser feito com atenção aos detalhes. Verifique todos os dados pessoais, endereço completo, telefones de contato e e-mail. A conferência evita problemas futuros.'
-                    },
-                    {
-                        title: 'Validações e Compliance',
-                        text: 'Realize todas as validações necessárias no sistema, incluindo consulta ao SERASA, verificação de PEP (Pessoa Exposta Politicamente) e análise de crédito inicial.'
-                    }
+                    { title: 'Documentação Necessária', text: 'Para abrir uma conta, é essencial verificar a documentação completa do cliente. Os documentos básicos incluem RG, CPF, comprovante de residência atualizado e comprovante de renda.' },
+                    { title: 'Processo de Cadastro', text: 'O cadastro deve ser feito com atenção aos detalhes. Verifique todos os dados pessoais, endereço completo, telefones de contato e e-mail.' },
+                    { title: 'Validações e Compliance', text: 'Realize todas as validações necessárias no sistema, incluindo consulta ao SERASA e verificação de PEP.' }
                 ],
                 questions: [
-                    {
-                        question: 'Qual documento NÃO é obrigatório para abertura de conta?',
-                        options: ['CPF', 'RG', 'Título de Eleitor', 'Comprovante de Residência'],
-                        correct: 2
-                    },
-                    {
-                        question: 'O que significa PEP?',
-                        options: ['Pessoa Exposta Politicamente', 'Protocolo de Endereço Padrão', 'Processo Eletrônico de Pagamento', 'Perfil Econômico do Pagador'],
-                        correct: 0
-                    },
-                    {
-                        question: 'Qual a importância do comprovante de residência?',
-                        options: ['Não é importante', 'Validar endereço do cliente', 'Apenas para arquivo', 'Exigência opcional'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que deve ser verificado no CPF?',
-                        options: ['Apenas se está correto', 'Regularidade e pendências', 'Data de emissão', 'Local de emissão'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Quando fazer análise de crédito?',
-                        options: ['Depois de 30 dias', 'Nunca', 'Durante o processo de abertura', 'Só se o cliente pedir'],
-                        correct: 2
-                    },
-                    {
-                        question: 'O que fazer se encontrar dados inconsistentes?',
-                        options: ['Ignorar', 'Solicitar correção ao cliente', 'Cadastrar assim mesmo', 'Cancelar o processo'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Qual o prazo de validade do comprovante de residência?',
-                        options: ['Não tem prazo', '90 dias', '180 dias', '1 ano'],
-                        correct: 1
-                    },
-                    {
-                        question: 'É obrigatório coletar telefone do cliente?',
-                        options: ['Não', 'Sim, pelo menos um contato', 'Apenas celular', 'Apenas fixo'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que é compliance bancário?',
-                        options: ['Sistema do banco', 'Conformidade com regras e leis', 'Tipo de conta', 'Setor do banco'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Após abrir a conta, o que deve ser entregue ao cliente?',
-                        options: ['Nada', 'Contrato e cartão', 'Apenas o número da conta', 'Extrato'],
-                        correct: 1
-                    }
+                    { question: 'Qual documento NÃO é obrigatório para abertura de conta?', options: ['CPF', 'RG', 'Título de Eleitor', 'Comprovante de Residência'], correct: 2 },
+                    { question: 'O que significa PEP?', options: ['Pessoa Exposta Politicamente', 'Protocolo de Endereço Padrão', 'Processo Eletrônico de Pagamento', 'Perfil Econômico do Pagador'], correct: 0 },
+                    { question: 'Qual a importância do comprovante de residência?', options: ['Não é importante', 'Validar endereço do cliente', 'Apenas para arquivo', 'Exigência opcional'], correct: 1 },
+                    { question: 'O que deve ser verificado no CPF?', options: ['Apenas se está correto', 'Regularidade e pendências', 'Data de emissão', 'Local de emissão'], correct: 1 },
+                    { question: 'Quando fazer análise de crédito?', options: ['Depois de 30 dias', 'Nunca', 'Durante o processo de abertura', 'Só se o cliente pedir'], correct: 2 },
+                    { question: 'O que fazer se encontrar dados inconsistentes?', options: ['Ignorar', 'Solicitar correção ao cliente', 'Cadastrar assim mesmo', 'Cancelar o processo'], correct: 1 },
+                    { question: 'Qual o prazo de validade do comprovante de residência?', options: ['Não tem prazo', '90 dias', '180 dias', '1 ano'], correct: 1 },
+                    { question: 'É obrigatório coletar telefone do cliente?', options: ['Não', 'Sim, pelo menos um contato', 'Apenas celular', 'Apenas fixo'], correct: 1 },
+                    { question: 'O que é compliance bancário?', options: ['Sistema do banco', 'Conformidade com regras e leis', 'Tipo de conta', 'Setor do banco'], correct: 1 },
+                    { question: 'Após abrir a conta, o que deve ser entregue ao cliente?', options: ['Nada', 'Contrato e cartão', 'Apenas o número da conta', 'Extrato'], correct: 1 }
                 ]
             },
             'plataforma_credito': {
                 title: 'Plataforma de Crédito',
                 description: 'Análise e concessão de crédito',
                 content: [
-                    {
-                        title: 'Tipos de Crédito',
-                        text: 'A plataforma oferece diversos produtos: crédito pessoal, consignado, CDC (Crédito Direto ao Consumidor), cheque especial e cartão de crédito. Cada um tem regras específicas de análise.'
-                    },
-                    {
-                        title: 'Análise de Risco',
-                        text: 'A análise considera score de crédito, histórico de pagamentos, renda comprovada, comprometimento atual e relacionamento com o banco. Todos esses fatores geram um rating de risco.'
-                    },
-                    {
-                        title: 'Aprovação e Limites',
-                        text: 'Os limites são definidos automaticamente pelo sistema com base no perfil de risco. Em casos especiais, pode haver análise manual por um gestor de crédito.'
-                    }
+                    { title: 'Tipos de Crédito', text: 'A plataforma oferece diversos produtos: crédito pessoal, consignado, CDC, cheque especial e cartão de crédito.' },
+                    { title: 'Análise de Risco', text: 'A análise considera score de crédito, histórico de pagamentos, renda comprovada e comprometimento atual.' },
+                    { title: 'Aprovação e Limites', text: 'Os limites são definidos automaticamente pelo sistema com base no perfil de risco.' }
                 ],
                 questions: [
-                    {
-                        question: 'O que é score de crédito?',
-                        options: ['Saldo em conta', 'Pontuação que indica risco de crédito', 'Tipo de crédito', 'Taxa de juros'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Qual tipo de crédito tem desconto em folha?',
-                        options: ['Pessoal', 'Consignado', 'CDC', 'Cheque especial'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que significa CDC?',
-                        options: ['Centro de Crédito', 'Crédito Direto ao Consumidor', 'Conta de Crédito Digital', 'Controle de Débito e Crédito'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Comprometimento de renda acima de quanto é preocupante?',
-                        options: ['10%', '30%', '50%', '70%'],
-                        correct: 2
-                    },
-                    {
-                        question: 'O que fazer se o sistema recusar automaticamente?',
-                        options: ['Liberar mesmo assim', 'Solicitar análise manual', 'Ignorar', 'Aumentar o limite'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Qual documento comprova renda de autônomo?',
-                        options: ['Holerite', 'Decore ou imposto de renda', 'Extrato bancário', 'Não precisa comprovar'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que é rating de risco?',
-                        options: ['Taxa de juros', 'Classificação do perfil do cliente', 'Tipo de conta', 'Limite de crédito'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Crédito pré-aprovado pode ser recusado?',
-                        options: ['Não, é garantido', 'Sim, se houver mudança no perfil', 'Apenas em casos criminais', 'Nunca'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Qual a importância do histórico de pagamento?',
-                        options: ['Nenhuma', 'Indica comportamento futuro do cliente', 'Só para arquivo', 'Apenas estatística'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que fazer se cliente discordar da análise?',
-                        options: ['Ignorar', 'Explicar os critérios usados', 'Mudar a decisão', 'Encerrar o atendimento'],
-                        correct: 1
-                    }
+                    { question: 'O que é score de crédito?', options: ['Saldo em conta', 'Pontuação que indica risco de crédito', 'Tipo de crédito', 'Taxa de juros'], correct: 1 },
+                    { question: 'Qual tipo de crédito tem desconto em folha?', options: ['Pessoal', 'Consignado', 'CDC', 'Cheque especial'], correct: 1 },
+                    { question: 'O que significa CDC?', options: ['Centro de Crédito', 'Crédito Direto ao Consumidor', 'Conta de Crédito Digital', 'Controle de Débito'], correct: 1 },
+                    { question: 'Comprometimento de renda acima de quanto é preocupante?', options: ['10%', '30%', '50%', '70%'], correct: 2 },
+                    { question: 'O que fazer se o sistema recusar automaticamente?', options: ['Liberar mesmo assim', 'Solicitar análise manual', 'Ignorar', 'Aumentar o limite'], correct: 1 },
+                    { question: 'Qual documento comprova renda de autônomo?', options: ['Holerite', 'Decore ou imposto de renda', 'Extrato bancário', 'Não precisa comprovar'], correct: 1 },
+                    { question: 'O que é rating de risco?', options: ['Taxa de juros', 'Classificação do perfil do cliente', 'Tipo de conta', 'Limite de crédito'], correct: 1 },
+                    { question: 'Crédito pré-aprovado pode ser recusado?', options: ['Não, é garantido', 'Sim, se houver mudança no perfil', 'Apenas em casos criminais', 'Nunca'], correct: 1 },
+                    { question: 'Qual a importância do histórico de pagamento?', options: ['Nenhuma', 'Indica comportamento futuro do cliente', 'Só para arquivo', 'Apenas estatística'], correct: 1 },
+                    { question: 'O que fazer se cliente discordar da análise?', options: ['Ignorar', 'Explicar os critérios usados', 'Mudar a decisão', 'Encerrar atendimento'], correct: 1 }
                 ]
             },
             'analise_contas': {
                 title: 'Análise de Contas',
                 description: 'Monitoramento e análise de contas',
                 content: [
-                    {
-                        title: 'Movimentação Financeira',
-                        text: 'Analise o padrão de movimentação: entradas regulares, débitos recorrentes, saldo médio e comportamento ao longo do tempo. Identifique anomalias que possam indicar problemas.'
-                    },
-                    {
-                        title: 'Indicadores de Alerta',
-                        text: 'Fique atento a: saques em espécie muito frequentes, transferências suspeitas, movimentação incompatível com renda declarada, uso excessivo de cheque especial.'
-                    },
-                    {
-                        title: 'Relatórios e Compliance',
-                        text: 'Documente todas as análises realizadas. Em casos suspeitos, siga o protocolo de compliance e reporte ao setor responsável imediatamente.'
-                    }
+                    { title: 'Movimentação Financeira', text: 'Analise o padrão de movimentação: entradas regulares, débitos recorrentes e saldo médio.' },
+                    { title: 'Indicadores de Alerta', text: 'Fique atento a saques frequentes, transferências suspeitas e movimentação incompatível.' },
+                    { title: 'Relatórios e Compliance', text: 'Documente todas as análises realizadas e reporte casos suspeitos.' }
                 ],
                 questions: [
-                    {
-                        question: 'O que é movimentação atípica?',
-                        options: ['Movimentação normal', 'Diferente do padrão habitual do cliente', 'Apenas débitos', 'Apenas créditos'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Saque em espécie acima de R$ 50.000 exige:',
-                        options: ['Nada especial', 'Comunicação ao COAF', 'Autorização do gerente', 'Apenas registro'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que é saldo médio?',
-                        options: ['Saldo atual', 'Média dos saldos em determinado período', 'Maior saldo do mês', 'Saldo mínimo'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Débitos recorrentes são:',
-                        options: ['Aleatórios', 'Pagamentos regulares e previsíveis', 'Saques', 'Transferências'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que fazer ao identificar suspeita de fraude?',
-                        options: ['Ignorar', 'Bloquear conta e reportar', 'Avisar o cliente apenas', 'Continuar normal'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Uso excessivo de cheque especial indica:',
-                        options: ['Bom cliente', 'Possível dificuldade financeira', 'Nada relevante', 'Cliente VIP'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que é COAF?',
-                        options: ['Banco', 'Conselho de Controle de Atividades Financeiras', 'Tipo de conta', 'Sistema'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Transferências suspeitas devem ser:',
-                        options: ['Ignoradas', 'Analisadas e reportadas se necessário', 'Canceladas imediatamente', 'Autorizadas sempre'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Qual período ideal para análise de padrão?',
-                        options: ['1 dia', '1 semana', 'Mínimo 3 meses', '1 ano'],
-                        correct: 2
-                    },
-                    {
-                        question: 'Conta com movimentação incompatível com renda declarada:',
-                        options: ['É normal', 'Requer investigação', 'Deve ser encerrada', 'Ignorar'],
-                        correct: 1
-                    }
+                    { question: 'O que é movimentação atípica?', options: ['Movimentação normal', 'Diferente do padrão habitual', 'Apenas débitos', 'Apenas créditos'], correct: 1 },
+                    { question: 'Saque acima de R$ 50.000 exige:', options: ['Nada especial', 'Comunicação ao COAF', 'Autorização do gerente', 'Apenas registro'], correct: 1 },
+                    { question: 'O que é saldo médio?', options: ['Saldo atual', 'Média dos saldos em período', 'Maior saldo', 'Saldo mínimo'], correct: 1 },
+                    { question: 'Débitos recorrentes são:', options: ['Aleatórios', 'Pagamentos regulares', 'Saques', 'Transferências'], correct: 1 },
+                    { question: 'O que fazer ao identificar fraude?', options: ['Ignorar', 'Bloquear e reportar', 'Avisar cliente', 'Continuar normal'], correct: 1 },
+                    { question: 'Uso excessivo de cheque especial indica:', options: ['Bom cliente', 'Dificuldade financeira', 'Nada relevante', 'Cliente VIP'], correct: 1 },
+                    { question: 'O que é COAF?', options: ['Banco', 'Conselho de Controle de Atividades Financeiras', 'Tipo de conta', 'Sistema'], correct: 1 },
+                    { question: 'Transferências suspeitas devem ser:', options: ['Ignoradas', 'Analisadas e reportadas', 'Canceladas', 'Autorizadas'], correct: 1 },
+                    { question: 'Período ideal para análise:', options: ['1 dia', '1 semana', 'Mínimo 3 meses', '1 ano'], correct: 2 },
+                    { question: 'Movimentação incompatível com renda:', options: ['É normal', 'Requer investigação', 'Encerrar conta', 'Ignorar'], correct: 1 }
                 ]
             },
             'emissao_ccb': {
                 title: 'Emissão de CCB',
                 description: 'Cédula de Crédito Bancário',
                 content: [
-                    {
-                        title: 'O que é CCB',
-                        text: 'A Cédula de Crédito Bancário é um título de crédito que formaliza operações de empréstimo. É um documento legal que comprova a dívida e seus termos entre banco e cliente.'
-                    },
-                    {
-                        title: 'Dados Obrigatórios',
-                        text: 'A CCB deve conter: valor principal, taxa de juros, prazo de pagamento, forma de pagamento, garantias (se houver), dados completos do devedor e data de emissão.'
-                    },
-                    {
-                        title: 'Assinatura e Validação',
-                        text: 'A CCB só tem validade jurídica com assinatura do cliente. Pode ser física ou digital (com certificado válido). Sempre guarde uma cópia no sistema para fins legais.'
-                    }
+                    { title: 'O que é CCB', text: 'A Cédula de Crédito Bancário é um título que formaliza operações de empréstimo.' },
+                    { title: 'Dados Obrigatórios', text: 'A CCB deve conter valor, taxa de juros, prazo, forma de pagamento e dados do devedor.' },
+                    { title: 'Assinatura e Validação', text: 'A CCB só tem validade com assinatura do cliente, física ou digital.' }
                 ],
                 questions: [
-                    {
-                        question: 'O que é CCB?',
-                        options: ['Conta Corrente Bancária', 'Cédula de Crédito Bancário', 'Centro de Crédito Brasil', 'Cartão de Crédito Básico'],
-                        correct: 1
-                    },
-                    {
-                        question: 'A CCB é um:',
-                        options: ['Documento informal', 'Título de crédito com valor legal', 'Tipo de conta', 'Cartão'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Assinatura digital em CCB precisa de:',
-                        options: ['Nada especial', 'Certificado digital válido', 'Testemunha', 'Reconhecimento em cartório'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Qual informação NÃO é obrigatória na CCB?',
-                        options: ['Valor principal', 'Taxa de juros', 'Nome da mãe do devedor', 'Prazo de pagamento'],
-                        correct: 2
-                    },
-                    {
-                        question: 'CCB sem assinatura do cliente é:',
-                        options: ['Válida', 'Inválida juridicamente', 'Válida por 30 dias', 'Depende do valor'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Garantias na CCB são:',
-                        options: ['Sempre obrigatórias', 'Opcionais conforme o caso', 'Proibidas', 'Só para valores altos'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Onde deve ser armazenada a CCB?',
-                        options: ['Apenas físico', 'Sistema digital do banco', 'Com o cliente apenas', 'Não precisa guardar'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que fazer se cliente se recusar a assinar?',
-                        options: ['Forçar assinatura', 'Não liberar o crédito', 'Assinar por ele', 'Liberar mesmo assim'],
-                        correct: 1
-                    },
-                    {
-                        question: 'CCB pode ser alterada após assinatura?',
-                        options: ['Sim, a qualquer momento', 'Não, apenas com aditivo contratual', 'Sim, pelo gerente', 'Nunca pode ser alterada'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Qual a função principal da CCB?',
-                        options: ['Decorativa', 'Formalizar e comprovar o empréstimo', 'Apenas controle interno', 'Marketing'],
-                        correct: 1
-                    }
+                    { question: 'O que é CCB?', options: ['Conta Corrente Bancária', 'Cédula de Crédito Bancário', 'Centro de Crédito', 'Cartão de Crédito'], correct: 1 },
+                    { question: 'A CCB é um:', options: ['Documento informal', 'Título de crédito', 'Tipo de conta', 'Cartão'], correct: 1 },
+                    { question: 'Assinatura digital precisa de:', options: ['Nada especial', 'Certificado digital válido', 'Testemunha', 'Cartório'], correct: 1 },
+                    { question: 'Qual NÃO é obrigatório na CCB:', options: ['Valor', 'Taxa de juros', 'Nome da mãe', 'Prazo'], correct: 2 },
+                    { question: 'CCB sem assinatura é:', options: ['Válida', 'Inválida', 'Válida por 30 dias', 'Depende do valor'], correct: 1 },
+                    { question: 'Garantias na CCB são:', options: ['Sempre obrigatórias', 'Opcionais conforme caso', 'Proibidas', 'Só valores altos'], correct: 1 },
+                    { question: 'Onde armazenar CCB:', options: ['Apenas físico', 'Sistema digital', 'Com cliente', 'Não precisa'], correct: 1 },
+                    { question: 'Cliente recusa assinar:', options: ['Forçar', 'Não liberar crédito', 'Assinar por ele', 'Liberar'], correct: 1 },
+                    { question: 'CCB pode ser alterada:', options: ['Sim, sempre', 'Não, apenas com aditivo', 'Sim, gerente', 'Nunca'], correct: 1 },
+                    { question: 'Função da CCB:', options: ['Decorativa', 'Formalizar empréstimo', 'Controle interno', 'Marketing'], correct: 1 }
                 ]
             },
             'emissao_cartoes': {
                 title: 'Emissão de Cartões',
                 description: 'Gestão de cartões bancários',
                 content: [
-                    {
-                        title: 'Tipos de Cartões',
-                        text: 'O banco oferece: cartão de débito, crédito, múltiplo (débito + crédito) e pré-pago. Cada tipo tem requisitos e funcionalidades diferentes.'
-                    },
-                    {
-                        title: 'Processo de Solicitação',
-                        text: 'Verifique se o cliente tem conta ativa, documentação completa e, para cartão de crédito, se passou pela análise de crédito. O cartão é produzido e enviado em até 10 dias úteis.'
-                    },
-                    {
-                        title: 'Ativação e Senhas',
-                        text: 'Oriente o cliente sobre ativação (app, site ou telefone), cadastro de senha segura e cuidados com segurança. Reforce sobre não compartilhar senhas.'
-                    }
+                    { title: 'Tipos de Cartões', text: 'Cartão de débito, crédito, múltiplo e pré-pago. Cada tipo tem requisitos diferentes.' },
+                    { title: 'Processo de Solicitação', text: 'Verifique conta ativa, documentação e análise de crédito (para cartão de crédito).' },
+                    { title: 'Ativação e Senhas', text: 'Oriente sobre ativação via app, site ou telefone, e cadastro de senha segura.' }
                 ],
                 questions: [
-                    {
-                        question: 'Cartão múltiplo combina:',
-                        options: ['Dois créditos', 'Débito e crédito na mesma função', 'Dois débitos', 'Crédito e pré-pago'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Para emitir cartão de crédito é obrigatório:',
-                        options: ['Apenas conta ativa', 'Análise de crédito aprovada', 'Só ter CPF', 'Nada especial'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Prazo médio para entrega do cartão:',
-                        options: ['24 horas', '10 dias úteis', '30 dias', '2 meses'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Senha do cartão deve ter quantos dígitos?',
-                        options: ['4 dígitos', '6 dígitos', '8 dígitos', 'Livre escolha'],
-                        correct: 0
-                    },
-                    {
-                        question: 'O que fazer se cartão não chegar no prazo?',
-                        options: ['Aguardar indefinidamente', 'Solicitar 2ª via após prazo', 'Ir ao banco pessoalmente', 'Desistir'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Cartão pré-pago precisa de:',
-                        options: ['Análise de crédito', 'Apenas carga de valor', 'Comprovante de renda', 'Garantias'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Cliente pode ter quantos cartões?',
-                        options: ['Apenas 1', 'Conforme política do banco', 'Ilimitado', 'Máximo 3'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Ativação do cartão pode ser feita por:',
-                        options: ['Apenas agência', 'App, site ou telefone', 'Só telefone', 'Correio'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que fazer se cliente esquecer senha?',
-                        options: ['Informar a senha antiga', 'Processo de recuperação/redefinição', 'Emitir novo cartão', 'Nada pode ser feito'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Cartão clonado deve ser:',
-                        options: ['Ignorado', 'Bloqueado imediatamente', 'Usado normalmente', 'Trocado depois de 30 dias'],
-                        correct: 1
-                    }
+                    { question: 'Cartão múltiplo combina:', options: ['Dois créditos', 'Débito e crédito', 'Dois débitos', 'Crédito e pré-pago'], correct: 1 },
+                    { question: 'Para cartão de crédito é obrigatório:', options: ['Apenas conta', 'Análise de crédito aprovada', 'Só CPF', 'Nada especial'], correct: 1 },
+                    { question: 'Prazo de entrega:', options: ['24 horas', '10 dias úteis', '30 dias', '2 meses'], correct: 1 },
+                    { question: 'Senha deve ter:', options: ['4 dígitos', '6 dígitos', '8 dígitos', 'Livre'], correct: 0 },
+                    { question: 'Cartão não chega:', options: ['Aguardar', 'Solicitar 2ª via', 'Ir ao banco', 'Desistir'], correct: 1 },
+                    { question: 'Cartão pré-pago precisa de:', options: ['Análise crédito', 'Apenas carga', 'Comprovante renda', 'Garantias'], correct: 1 },
+                    { question: 'Cliente pode ter:', options: ['Apenas 1', 'Conforme política', 'Ilimitado', 'Máximo 3'], correct: 1 },
+                    { question: 'Ativação pode ser por:', options: ['Apenas agência', 'App, site ou telefone', 'Só telefone', 'Correio'], correct: 1 },
+                    { question: 'Esqueceu senha:', options: ['Dar senha antiga', 'Recuperação/redefinição', 'Novo cartão', 'Nada'], correct: 1 },
+                    { question: 'Cartão clonado:', options: ['Ignorar', 'Bloquear imediatamente', 'Usar normal', 'Trocar depois'], correct: 1 }
                 ]
             },
             'med': {
                 title: 'MED - Máquina de Depósito',
                 description: 'Operação de máquinas de depósito',
                 content: [
-                    {
-                        title: 'Funcionamento da MED',
-                        text: 'A MED permite depósitos em dinheiro e cheque sem envelope. Aceita até 50 notas por transação. O sistema valida e conta automaticamente as cédulas.'
-                    },
-                    {
-                        title: 'Processo de Depósito',
-                        text: 'Cliente insere cartão, digita senha, escolhe depósito, insere as notas/cheques. A máquina conta e mostra o valor. Cliente confirma ou cancela a operação. Comprovante é impresso ao final.'
-                    },
-                    {
-                        title: 'Resolução de Problemas',
-                        text: 'Notas rasgadas ou muito velhas podem ser rejeitadas. Máquina travada: acione suporte técnico. Valor divergente: sempre revise antes de confirmar. Guarde o comprovante para comprovação.'
-                    }
+                    { title: 'Funcionamento da MED', text: 'Permite depósitos em dinheiro e cheque sem envelope. Aceita até 50 notas por transação.' },
+                    { title: 'Processo de Depósito', text: 'Cliente insere cartão, senha, escolhe depósito, insere notas. Máquina conta automaticamente.' },
+                    { title: 'Resolução de Problemas', text: 'Notas rasgadas podem ser rejeitadas. Máquina travada: acionar suporte técnico.' }
                 ],
                 questions: [
-                    {
-                        question: 'MED aceita quantas notas por transação?',
-                        options: ['10 notas', '20 notas', '50 notas', '100 notas'],
-                        correct: 2
-                    },
-                    {
-                        question: 'Depósito na MED precisa de envelope?',
-                        options: ['Sim, sempre', 'Não precisa', 'Às vezes', 'Só para cheque'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Nota rasgada é aceita pela MED?',
-                        options: ['Sempre aceita', 'Geralmente não aceita', 'Depende do valor', 'Só notas grandes'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Quem conta o dinheiro na MED?',
-                        options: ['Cliente manualmente', 'Funcionário do banco', 'Máquina automaticamente', 'Gerente'],
-                        correct: 2
-                    },
-                    {
-                        question: 'Comprovante de depósito deve ser:',
-                        options: ['Descartado', 'Guardado pelo cliente', 'Deixado na máquina', 'Enviado ao banco'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Valor apareceu errado na tela, o que fazer?',
-                        options: ['Confirmar mesmo assim', 'Cancelar e revisar', 'Chamar a polícia', 'Ir embora'],
-                        correct: 1
-                    },
-                    {
-                        question: 'MED travou durante depósito, deve-se:',
-                        options: ['Forçar abertura', 'Acionar suporte técnico', 'Ir embora', 'Esperar destrancar sozinha'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Depósito em cheque na MED é:',
-                        options: ['Impossível', 'Possível sim', 'Só em agências', 'Proibido'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Horário de funcionamento da MED geralmente é:',
-                        options: ['Horário comercial', '24 horas conforme local', 'Só de manhã', 'Só à tarde'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que fazer se MED não reconhecer o cartão?',
-                        options: ['Forçar entrada do cartão', 'Tentar novamente ou usar outro cartão', 'Desistir', 'Ligar para a polícia'],
-                        correct: 1
-                    }
+                    { question: 'MED aceita quantas notas:', options: ['10', '20', '50', '100'], correct: 2 },
+                    { question: 'Precisa de envelope:', options: ['Sim', 'Não', 'Às vezes', 'Só cheque'], correct: 1 },
+                    { question: 'Nota rasgada:', options: ['Sempre aceita', 'Geralmente não', 'Depende valor', 'Só grandes'], correct: 1 },
+                    { question: 'Quem conta:', options: ['Cliente', 'Funcionário', 'Máquina', 'Gerente'], correct: 2 },
+                    { question: 'Comprovante deve ser:', options: ['Descartado', 'Guardado', 'Na máquina', 'Enviado'], correct: 1 },
+                    { question: 'Valor errado:', options: ['Confirmar', 'Cancelar e revisar', 'Chamar polícia', 'Ir embora'], correct: 1 },
+                    { question: 'MED travou:', options: ['Forçar', 'Acionar suporte', 'Ir embora', 'Esperar'], correct: 1 },
+                    { question: 'Depósito cheque:', options: ['Impossível', 'Possível', 'Só agências', 'Proibido'], correct: 1 },
+                    { question: 'Horário:', options: ['Comercial', '24h conforme local', 'Só manhã', 'Só tarde'], correct: 1 },
+                    { question: 'Não reconhece cartão:', options: ['Forçar', 'Tentar novamente', 'Desistir', 'Ligar polícia'], correct: 1 }
                 ]
             },
             'cabine': {
                 title: 'Cabine de Autoatendimento',
-                description: 'Suporte em cabines de autoatendimento',
+                description: 'Suporte em cabines',
                 content: [
-                    {
-                        title: 'Serviços Disponíveis',
-                        text: 'Na cabine: saques, depósitos, extratos, pagamentos, transferências, segunda via de documentos. Oriente o cliente sobre qual serviço usar para cada necessidade.'
-                    },
-                    {
-                        title: 'Atendimento ao Cliente',
-                        text: 'Auxilie sem fazer operações pelo cliente. Ensine passo a passo cada procedimento. Seja paciente com idosos e pessoas com dificuldade. Preserve sempre a privacidade e segurança do cliente.'
-                    },
-                    {
-                        title: 'Segurança e Prevenção',
-                        text: 'Fique atento a fraudes: pessoas tentando ver senhas, oferecendo ajuda suspeita, comportamento nervoso. Reporte atividades suspeitas ao setor de segurança.'
-                    }
+                    { title: 'Serviços Disponíveis', text: 'Saques, depósitos, extratos, pagamentos, transferências e segunda via de documentos.' },
+                    { title: 'Atendimento ao Cliente', text: 'Auxilie sem fazer operações pelo cliente. Ensine passo a passo.' },
+                    { title: 'Segurança', text: 'Fique atento a fraudes: pessoas tentando ver senhas ou oferecendo ajuda suspeita.' }
                 ],
                 questions: [
-                    {
-                        question: 'Na cabine de autoatendimento é possível fazer:',
-                        options: ['Apenas saques', 'Diversos serviços bancários', 'Só depósitos', 'Apenas consultas'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Funcionário pode digitar senha do cliente?',
-                        options: ['Sim, pode', 'Não, nunca deve fazer isso', 'Às vezes', 'Com autorização por escrito'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Cliente com dificuldade na cabine, você deve:',
-                        options: ['Fazer a operação por ele', 'Ensinar passo a passo', 'Ignorar', 'Mandar ir ao caixa'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Pessoa estranha oferecendo ajuda ao cliente indica:',
-                        options: ['É normal e prestativo', 'Possível tentativa de fraude', 'Deve ser incentivado', 'Ignorar completamente'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Limite de saque em autoatendimento é:',
-                        options: ['Ilimitado', 'Conforme política do banco', 'R$ 100 fixo', 'R$ 1.000 fixo'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Cliente esqueceu cartão preso na máquina:',
-                        options: ['Deixar lá', 'Recolher e devolver com segurança', 'Ficar com o cartão', 'Jogar no lixo'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Extrato impresso na cabine deve ser:',
-                        options: ['Deixado na máquina', 'Entregue ao cliente', 'Descartado no lixo', 'Arquivado pelo banco'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Máquina sem dinheiro para saque:',
-                        options: ['Forçar a máquina', 'Orientar cliente a tentar outro caixa', 'Tentar abrir a máquina', 'Ignorar o cliente'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Horário das cabines geralmente é:',
-                        options: ['24h ou conforme a agência', 'Só horário comercial', 'Só de manhã', 'Meio-dia até 18h'],
-                        correct: 0
-                    },
-                    {
-                        question: 'Comportamento suspeito na cabine deve:',
-                        options: ['Ser ignorado', 'Ser reportado à segurança', 'Confrontar a pessoa', 'Filmar escondido'],
-                        correct: 1
-                    }
+                    { question: 'Na cabine é possível:', options: ['Apenas saques', 'Diversos serviços', 'Só depósitos', 'Apenas consultas'], correct: 1 },
+                    { question: 'Funcionário pode digitar senha:', options: ['Sim', 'Não, nunca', 'Às vezes', 'Com autorização'], correct: 1 },
+                    { question: 'Cliente com dificuldade:', options: ['Fazer por ele', 'Ensinar passo a passo', 'Ignorar', 'Mandar ao caixa'], correct: 1 },
+                    { question: 'Pessoa oferecendo ajuda:', options: ['É normal', 'Possível fraude', 'Incentivar', 'Ignorar'], correct: 1 },
+                    { question: 'Limite de saque:', options: ['Ilimitado', 'Conforme política', 'R$ 100', 'R$ 1.000'], correct: 1 },
+                    { question: 'Cartão esquecido:', options: ['Deixar', 'Recolher e devolver', 'Ficar', 'Jogar fora'], correct: 1 },
+                    { question: 'Extrato impresso:', options: ['Deixar', 'Entregar ao cliente', 'Descartar', 'Arquivar'], correct: 1 },
+                    { question: 'Máquina sem dinheiro:', options: ['Forçar', 'Orientar outro caixa', 'Abrir', 'Ignorar'], correct: 1 },
+                    { question: 'Horário das cabines:', options: ['24h ou conforme', 'Só comercial', 'Só manhã', 'Meio-dia'], correct: 0 },
+                    { question: 'Comportamento suspeito:', options: ['Ignorar', 'Reportar', 'Confrontar', 'Filmar'], correct: 1 }
                 ]
             },
             'emissao_boleto': {
                 title: 'Emissão de Boleto',
-                description: 'Geração e gestão de boletos bancários',
+                description: 'Geração de boletos bancários',
                 content: [
-                    {
-                        title: 'Tipos de Boleto',
-                        text: 'Boleto registrado (rastreável) e não registrado. O registrado é obrigatório desde 2018 para a maioria das operações. Contém código de barras, linha digitável, dados do pagador e beneficiário.'
-                    },
-                    {
-                        title: 'Geração de Boleto',
-                        text: 'Informe: valor, data de vencimento, dados do pagador, descrição/observações. Sistema gera código único para identificação. Boleto pode ser enviado por email, impresso ou acessado via app.'
-                    },
-                    {
-                        title: 'Gestão e Baixa',
-                        text: 'Acompanhe status do boleto: pendente, pago, vencido, cancelado. Baixa é automática após pagamento ser compensado. Para cancelar, siga procedimento no sistema antes do pagamento.'
-                    }
+                    { title: 'Tipos de Boleto', text: 'Boleto registrado (rastreável) é obrigatório desde 2018. Contém código de barras e linha digitável.' },
+                    { title: 'Geração de Boleto', text: 'Informe valor, vencimento, dados do pagador e descrição. Sistema gera código único.' },
+                    { title: 'Gestão e Baixa', text: 'Acompanhe status: pendente, pago, vencido, cancelado. Baixa é automática após pagamento.' }
                 ],
                 questions: [
-                    {
-                        question: 'Boleto registrado é obrigatório desde:',
-                        options: ['2015', '2018', '2020', '2022'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Código de barras do boleto serve para:',
-                        options: ['Decoração', 'Leitura automática no pagamento', 'Identificar apenas o banco', 'Nada importante'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Boleto pode ser enviado por:',
-                        options: ['Só correio', 'Email, app ou impresso', 'Apenas WhatsApp', 'Só pessoalmente'],
-                        correct: 1
-                    },
-                    {
-                        question: 'O que acontece após vencimento do boleto?',
-                        options: ['Boleto desaparece', 'Pode ter multa e juros aplicados', 'Nada muda', 'Não pode mais ser pago'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Dados obrigatórios no boleto NÃO incluem:',
-                        options: ['Valor a pagar', 'Data de vencimento', 'Cor favorita do pagador', 'Dados do pagador'],
-                        correct: 2
-                    },
-                    {
-                        question: 'Baixa do boleto após pagamento é:',
-                        options: ['Manual sempre', 'Automática pelo sistema', 'Opcional', 'Desnecessária'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Para cancelar um boleto você deve:',
-                        options: ['Rasgar o papel', 'Usar procedimento no sistema', 'Ligar para o cliente', 'Nada é necessário'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Linha digitável do boleto é:',
-                        options: ['Apenas decoração', 'Código alternativo para pagamento', 'Telefone do banco', 'Nada importante'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Boleto pago mas sistema não atualizou:',
-                        options: ['Cliente deve pagar novamente', 'Verificar com compensação bancária', 'Ignorar o problema', 'É certamente fraude'],
-                        correct: 1
-                    },
-                    {
-                        question: 'Beneficiário do boleto é:',
-                        options: ['Quem paga o boleto', 'Quem recebe o pagamento', 'O banco emissor', 'Ninguém específico'],
-                        correct: 1
-                    }
+                    { question: 'Boleto registrado desde:', options: ['2015', '2018', '2020', '2022'], correct: 1 },
+                    { question: 'Código de barras serve para:', options: ['Decoração', 'Leitura automática', 'Identificar banco', 'Nada'], correct: 1 },
+                    { question: 'Boleto pode ser enviado por:', options: ['Só correio', 'Email, app ou impresso', 'Apenas WhatsApp', 'Só pessoalmente'], correct: 1 },
+                    { question: 'Após vencimento:', options: ['Boleto some', 'Pode ter multa e juros', 'Nada muda', 'Não pode pagar'], correct: 1 },
+                    { question: 'Dados obrigatórios NÃO incluem:', options: ['Valor', 'Vencimento', 'Cor favorita', 'Dados pagador'], correct: 2 },
+                    { question: 'Baixa após pagamento:', options: ['Manual', 'Automática', 'Opcional', 'Desnecessária'], correct: 1 },
+                    { question: 'Para cancelar:', options: ['Rasgar', 'Usar procedimento', 'Ligar cliente', 'Nada'], correct: 1 },
+                    { question: 'Linha digitável é:', options: ['Decoração', 'Código alternativo', 'Telefone banco', 'Nada'], correct: 1 },
+                    { question: 'Boleto pago mas não atualizou:', options: ['Pagar novamente', 'Verificar compensação', 'Ignorar', 'É fraude'], correct: 1 },
+                    { question: 'Beneficiário é:', options: ['Quem paga', 'Quem recebe', 'O banco', 'Ninguém'], correct: 1 }
                 ]
             }
+        };
+
+        // Templates de perfis
+        const profileTemplates = {
+            completo: ['abertura_contas', 'plataforma_credito', 'analise_contas', 'emissao_ccb', 'emissao_cartoes', 'med', 'cabine', 'emissao_boleto'],
+            atendimento: ['abertura_contas', 'emissao_cartoes', 'med', 'cabine', 'emissao_boleto'],
+            credito: ['plataforma_credito', 'analise_contas', 'emissao_ccb'],
+            backoffice: ['analise_contas', 'emissao_ccb', 'emissao_boleto']
         };
 
         // Estado da aplicação
@@ -935,29 +755,128 @@
         let currentModule = null;
         let userProgress = {};
         let companyName = '';
+        let isAdminMode = false;
+        let generatedLink = '';
 
         // Inicialização
         function init() {
-            // Pegar módulos e nome da empresa da URL
             const urlParams = new URLSearchParams(window.location.search);
             const modulesParam = urlParams.get('modulos');
             companyName = urlParams.get('empresa') || '';
+            const adminParam = urlParams.get('admin');
+
+            // Verificar modo admin
+            if (adminParam === 'true') {
+                isAdminMode = true;
+                showAdminPanel();
+            }
 
             if (modulesParam) {
                 activeModules = modulesParam.split(',');
-            } else {
-                // Se não tiver parâmetros, mostrar todos os módulos (para teste)
+            } else if (!isAdminMode) {
                 activeModules = Object.keys(trainingModules);
             }
 
-            // Carregar progresso do localStorage
             const storageKey = `training_progress_${modulesParam || 'default'}`;
             const savedProgress = localStorage.getItem(storageKey);
             if (savedProgress) {
                 userProgress = JSON.parse(savedProgress);
             }
 
-            loadDashboard();
+            if (!isAdminMode) {
+                loadDashboard();
+            }
+        }
+
+        // Mostrar painel admin
+        function showAdminPanel() {
+            document.getElementById('admin-panel').style.display = 'block';
+            document.getElementById('adminBadge').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+
+            // Criar checkboxes dos módulos
+            const container = document.getElementById('adminModulesCheckbox');
+            container.innerHTML = '';
+            
+            Object.keys(trainingModules).forEach(moduleId => {
+                const module = trainingModules[moduleId];
+                const div = document.createElement('div');
+                div.className = 'checkbox-item';
+                div.innerHTML = `
+                    <input type="checkbox" id="admin_${moduleId}" value="${moduleId}">
+                    <label for="admin_${moduleId}">${module.title}</label>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Toggle admin panel
+        function toggleAdmin() {
+            const panel = document.getElementById('admin-panel');
+            const dashboard = document.getElementById('dashboard');
+            
+            if (panel.style.display === 'none') {
+                panel.style.display = 'block';
+                dashboard.style.display = 'none';
+            } else {
+                panel.style.display = 'none';
+                dashboard.style.display = 'block';
+                loadDashboard();
+            }
+        }
+
+        // Aplicar template
+        function applyTemplate(type) {
+            // Desmarcar todos
+            document.querySelectorAll('#adminModulesCheckbox input').forEach(cb => cb.checked = false);
+            
+            // Marcar os do template
+            profileTemplates[type].forEach(moduleId => {
+                const checkbox = document.getElementById(`admin_${moduleId}`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+
+        // Gerar link no painel admin
+        function generateAdminLink() {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const selectedModules = [];
+            
+            document.querySelectorAll('#adminModulesCheckbox input:checked').forEach(cb => {
+                selectedModules.push(cb.value);
+            });
+
+            if (selectedModules.length === 0) {
+                alert('⚠️ Selecione pelo menos um módulo!');
+                return;
+            }
+
+            const company = document.getElementById('adminCompanyName').value.trim();
+            
+            generatedLink = baseUrl + '?modulos=' + selectedModules.join(',');
+            if (company) {
+                generatedLink += '&empresa=' + encodeURIComponent(company);
+            } else {
+                generatedLink += '&empresa=';
+            }
+
+            document.getElementById('generatedLinkDisplay').textContent = generatedLink;
+            document.getElementById('generatedLinkBox').style.display = 'block';
+            
+            // Scroll para o resultado
+            document.getElementById('generatedLinkBox').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Copiar link gerado
+        function copyGeneratedLink() {
+            navigator.clipboard.writeText(generatedLink).then(() => {
+                alert('✅ Link copiado para a área de transferência!');
+            });
+        }
+
+        // Testar link gerado
+        function testGeneratedLink() {
+            window.open(generatedLink, '_blank');
         }
 
         // Carregar Dashboard
@@ -999,7 +918,6 @@
                 grid.appendChild(card);
             });
 
-            // Atualizar barra de progresso
             const percentage = total > 0 ? (completed / total) * 100 : 0;
             document.getElementById('progressFill').style.width = percentage + '%';
             document.getElementById('progressText').textContent = `${completed} de ${total} treinamentos concluídos (${Math.round(percentage)}%)`;
@@ -1011,7 +929,7 @@
             const module = trainingModules[moduleId];
             
             const content = document.getElementById('trainingContent');
-            content.innerHTML = `<h2 style="color: #667eea; margin-bottom: 20px;">${module.title}</h2>`;
+            content.innerHTML = `<h2 style="color: #059669; margin-bottom: 20px;">${module.title}</h2>`;
             
             module.content.forEach(lesson => {
                 content.innerHTML += `
@@ -1068,7 +986,6 @@
 
             const passed = score >= 6;
 
-            // Salvar progresso
             userProgress[currentModule] = {
                 score: score,
                 passed: passed,
@@ -1080,7 +997,6 @@
             const storageKey = `training_progress_${modulesParam || 'default'}`;
             localStorage.setItem(storageKey, JSON.stringify(userProgress));
 
-            // Mostrar resultado
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('result-section').style.display = 'block';
             document.getElementById('score').textContent = `${score}/10`;
@@ -1115,6 +1031,7 @@
                     <p><strong>${module.title}</strong></p>
                     <p>com aproveitamento de <strong>${score}/10 (${(score/10*100)}%)</strong></p>
                     <p style="margin-top: 30px;">Data: ${date}</p>
+                    <p style="margin-top: 20px; font-size: 14px; color: #6b7280;">Fidúcia Academy</p>
                 </div>
             `;
         }
@@ -1135,7 +1052,7 @@
             window.scrollTo(0, 0);
         }
 
-        // Iniciar quando a página carregar
+        // Iniciar
         window.onload = init;
     </script>
 </body>
