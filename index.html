@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
@@ -121,33 +121,190 @@
             padding: 30px;
         }
 
+        /* TABS ADMIN */
+        .admin-tabs {
+            background: #f0fdf4;
+            padding: 0;
+            border-bottom: 2px solid #059669;
+            display: none;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #047857;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(5, 150, 105, 0.1);
+        }
+
+        .tab-btn.active {
+            color: #059669;
+            border-bottom-color: #059669;
+            background: white;
+        }
+
         /* PAINEL ADMIN */
         .admin-panel {
             display: none;
-            background: #f0fdf4;
-            border: 2px solid #059669;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
         }
 
-        .admin-panel h2 {
-            color: #059669;
-            margin-bottom: 20px;
-            font-size: 24px;
+        .admin-tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .admin-tab-content.active {
+            display: block;
         }
 
         .admin-section {
-            background: white;
+            background: #f9fafb;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
         }
 
         .admin-section h3 {
             color: #047857;
             margin-bottom: 15px;
             font-size: 18px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #059669;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #047857;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .table-header {
+            background: #f9fafb;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h4 {
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f9fafb;
+            padding: 10px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #1f2937;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .progress-bar-inline {
+            background: #e5e7eb;
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            display: inline-block;
+            width: 100px;
+            vertical-align: middle;
+        }
+
+        .progress-fill-inline {
+            height: 100%;
+            background: linear-gradient(90deg, #059669 0%, #047857 100%);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
         }
 
         .form-group {
@@ -159,6 +316,7 @@
             margin-bottom: 5px;
             font-weight: 600;
             color: #333;
+            font-size: 14px;
         }
 
         .form-group input {
@@ -176,7 +334,7 @@
 
         .checkbox-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 10px;
             margin-top: 10px;
         }
@@ -184,11 +342,12 @@
         .checkbox-item {
             display: flex;
             align-items: center;
-            padding: 10px;
-            background: #f9fafb;
+            padding: 8px;
+            background: white;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
+            border: 1px solid #e5e7eb;
         }
 
         .checkbox-item:hover {
@@ -205,24 +364,25 @@
             margin: 0;
             cursor: pointer;
             font-weight: normal;
+            font-size: 13px;
         }
 
         .template-buttons {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .template-btn {
-            padding: 12px;
+            padding: 10px;
             background: white;
             border: 2px solid #059669;
             border-radius: 8px;
             cursor: pointer;
             text-align: center;
             transition: all 0.3s;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #059669;
         }
@@ -236,24 +396,25 @@
             display: none;
             background: #dbeafe;
             border: 2px solid #3b82f6;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .generated-link-box h4 {
             color: #1e40af;
             margin-bottom: 10px;
+            font-size: 14px;
         }
 
         .link-display {
             background: white;
-            padding: 15px;
+            padding: 12px;
             border-radius: 6px;
             word-break: break-all;
             font-family: 'Courier New', monospace;
-            font-size: 13px;
-            margin-bottom: 15px;
+            font-size: 12px;
+            margin-bottom: 10px;
             border: 1px solid #93c5fd;
         }
 
@@ -381,9 +542,9 @@
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 10px 20px;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
             display: inline-block;
@@ -400,6 +561,11 @@
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
         }
 
         .btn-secondary {
@@ -424,6 +590,14 @@
 
         .btn-danger:hover {
             background: #dc2626;
+        }
+
+        .btn-export {
+            background: #8b5cf6;
+        }
+
+        .btn-export:hover {
+            background: #7c3aed;
         }
 
         /* Seções ocultas */
@@ -572,7 +746,7 @@
             .container {
                 box-shadow: none;
             }
-            .btn, .score, .btn-back, .admin-panel, .timer-container {
+            .btn, .score, .btn-back, .admin-panel, .timer-container, .admin-tabs {
                 display: none;
             }
         }
@@ -590,6 +764,12 @@
                 padding: 10px 15px;
                 font-size: 18px;
             }
+            .admin-tabs {
+                overflow-x: auto;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -606,6 +786,15 @@
             <p>Bem-vindo a plataforma de treinamento dos produtos Fidúcia, complete ele todo e obtenha seu certificado</p>
         </div>
 
+        <!-- TABS ADMIN -->
+        <div class="admin-tabs" id="adminTabs">
+            <button class="tab-btn active" onclick="switchAdminTab('generator')">🔗 Gerar Links</button>
+            <button class="tab-btn" onclick="switchAdminTab('dashboard')">📊 Dashboard</button>
+            <button class="tab-btn" onclick="switchAdminTab('clients')">👥 Clientes</button>
+            <button class="tab-btn" onclick="switchAdminTab('history')">📋 Histórico</button>
+            <button class="tab-btn" onclick="switchAdminTab('reports')">📈 Relatórios</button>
+        </div>
+
         <div class="content">
             <!-- Login Admin -->
             <div id="admin-login" class="admin-login">
@@ -617,49 +806,127 @@
 
             <!-- PAINEL ADMIN -->
             <div id="admin-panel" class="admin-panel">
-                <h2>🔧 Painel Administrativo - Gerador de Links</h2>
-                
-                <div class="admin-section">
-                    <h3>1️⃣ Templates Rápidos</h3>
-                    <div class="template-buttons">
-                        <button class="template-btn" onclick="applyTemplate('completo')">
-                            🎯 Completo (Todos)
-                        </button>
-                        <button class="template-btn" onclick="applyTemplate('atendimento')">
-                            👥 Atendimento
-                        </button>
-                        <button class="template-btn" onclick="applyTemplate('credito')">
-                            💰 Crédito
-                        </button>
-                        <button class="template-btn" onclick="applyTemplate('backoffice')">
-                            📊 Back Office
-                        </button>
+                <!-- TAB: Gerar Links -->
+                <div id="admin-tab-generator" class="admin-tab-content active">
+                    <h2 style="color: #059669; margin-bottom: 20px;">🔗 Gerador de Links de Treinamento</h2>
+                    
+                    <div class="admin-section">
+                        <h3>1️⃣ Templates Rápidos</h3>
+                        <div class="template-buttons">
+                            <button class="template-btn" onclick="applyTemplate('completo')">🎯 Completo</button>
+                            <button class="template-btn" onclick="applyTemplate('atendimento')">👥 Atendimento</button>
+                            <button class="template-btn" onclick="applyTemplate('credito')">💰 Crédito</button>
+                            <button class="template-btn" onclick="applyTemplate('backoffice')">📊 Back Office</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>2️⃣ Selecione os Módulos</h3>
+                        <div class="checkbox-grid" id="adminModulesCheckbox"></div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>3️⃣ Informações do Cliente</h3>
+                        <div class="form-group">
+                            <label>Nome da Empresa:</label>
+                            <input type="text" id="adminCompanyName" placeholder="Ex: Banco ABC Ltda">
+                        </div>
+                        <div class="form-group">
+                            <label>Email (opcional):</label>
+                            <input type="email" id="adminCompanyEmail" placeholder="contato@empresa.com">
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="generateAdminLink()">🚀 Gerar Link</button>
+                    <button class="btn btn-secondary" onclick="clearGeneratorForm()">🔄 Limpar</button>
+
+                    <div id="generatedLinkBox" class="generated-link-box">
+                        <h4>✅ Link Gerado com Sucesso!</h4>
+                        <div class="link-display" id="generatedLinkDisplay"></div>
+                        <button class="btn btn-copy btn-small" onclick="copyGeneratedLink()">📋 Copiar</button>
+                        <button class="btn btn-secondary btn-small" onclick="testGeneratedLink()">🔍 Testar</button>
                     </div>
                 </div>
 
-                <div class="admin-section">
-                    <h3>2️⃣ Selecione os Módulos</h3>
-                    <div class="checkbox-grid" id="adminModulesCheckbox"></div>
-                </div>
+                <!-- TAB: Dashboard -->
+                <div id="admin-tab-dashboard" class="admin-tab-content">
+                    <h2 style="color: #059669; margin-bottom: 20px;">📊 Dashboard</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Links Gerados</div>
+                            <div class="stat-number" id="stat-links">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Clientes Ativos</div>
+                            <div class="stat-number" id="stat-clients">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Aprovados</div>
+                            <div class="stat-number" id="stat-approved">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Pendentes</div>
+                            <div class="stat-number" id="stat-pending">0</div>
+                        </div>
+                    </div>
 
-                <div class="admin-section">
-                    <h3>3️⃣ Nome da Empresa (Opcional)</h3>
-                    <div class="form-group">
-                        <input type="text" id="adminCompanyName" placeholder="Ex: Banco ABC Ltda">
-                        <small style="color: #6b7280; display: block; margin-top: 5px;">
-                            Este nome aparecerá no certificado. Se deixar vazio, aparece "a empresa".
-                        </small>
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h4>Clientes Pendentes</h4>
+                            <button class="btn btn-small" onclick="refreshAdminData()">🔄 Atualizar</button>
+                        </div>
+                        <div id="pending-table"></div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h4>Aprovações Recentes</h4>
+                        </div>
+                        <div id="approved-table"></div>
                     </div>
                 </div>
 
-                <button class="btn" onclick="generateAdminLink()">🚀 Gerar Link do Treinamento</button>
-                <button class="btn btn-secondary" onclick="logout()">🚪 Sair</button>
+                <!-- TAB: Clientes -->
+                <div id="admin-tab-clients" class="admin-tab-content">
+                    <h2 style="color: #059669; margin-bottom: 20px;">👥 Clientes</h2>
+                    
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h4>Lista de Clientes</h4>
+                            <button class="btn btn-small btn-export" onclick="exportClients()">📥 Exportar CSV</button>
+                        </div>
+                        <div id="clients-table"></div>
+                    </div>
+                </div>
 
-                <div id="generatedLinkBox" class="generated-link-box">
-                    <h4>✅ Link Gerado com Sucesso!</h4>
-                    <div class="link-display" id="generatedLinkDisplay"></div>
-                    <button class="btn btn-copy" onclick="copyGeneratedLink()">📋 Copiar Link</button>
-                    <button class="btn btn-secondary" onclick="testGeneratedLink()">🔍 Testar Link</button>
+                <!-- TAB: Histórico -->
+                <div id="admin-tab-history" class="admin-tab-content">
+                    <h2 style="color: #059669; margin-bottom: 20px;">📋 Histórico de Links</h2>
+                    
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h4>Links Gerados</h4>
+                            <button class="btn btn-small btn-export" onclick="exportHistory()">📥 Exportar CSV</button>
+                        </div>
+                        <div id="history-table"></div>
+                    </div>
+                </div>
+
+                <!-- TAB: Relatórios -->
+                <div id="admin-tab-reports" class="admin-tab-content">
+                    <h2 style="color: #059669; margin-bottom: 20px;">📈 Relatórios</h2>
+                    
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h4>Desempenho por Módulo</h4>
+                        </div>
+                        <div id="reports-table"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn btn-secondary" onclick="logout()">🚪 Sair do Painel Admin</button>
                 </div>
             </div>
 
@@ -713,9 +980,9 @@
 
     <script>
         // SENHA DO ADMIN
-        const ADMIN_PASSWORD = "fiducia2025"; // MUDE ESTA SENHA!
+        const ADMIN_PASSWORD = "fiducia2025";
 
-        // Configuração dos módulos (mantido igual ao anterior por enquanto)
+        // Configuração dos módulos
         const trainingModules = {
             'abertura_contas': {
                 title: 'Abertura de Contas',
@@ -904,13 +1171,15 @@
         let generatedLink = '';
         let quizInProgress = false;
         let timerInterval = null;
-        let timeRemaining = 1800; // 30 minutos em segundos
+        let timeRemaining = 1800;
+        let generatedLinks = [];
+        let clientsData = [];
 
         // Constantes
         const MAX_ATTEMPTS = 3;
         const QUIZ_TIME_MINUTES = 30;
 
-        // Função para embaralhar array (Fisher-Yates)
+        // Função para embaralhar array
         function shuffleArray(array) {
             const newArray = [...array];
             for (let i = newArray.length - 1; i > 0; i--) {
@@ -927,7 +1196,10 @@
             companyName = urlParams.get('empresa') || '';
             const adminParam = urlParams.get('admin');
 
-            // Verificar modo admin
+            // Carregar dados admin
+            generatedLinks = JSON.parse(localStorage.getItem('fiducia_links') || '[]');
+            clientsData = JSON.parse(localStorage.getItem('fiducia_clients_data') || '[]');
+
             if (adminParam === 'true') {
                 isAdminMode = true;
                 showAdminLogin();
@@ -946,7 +1218,32 @@
                 userProgress = JSON.parse(savedProgress);
             }
 
+            // Salvar dados do cliente
+            if (companyName && modulesParam) {
+                saveClientData();
+            }
+
             loadDashboard();
+        }
+
+        // Salvar dados do cliente
+        function saveClientData() {
+            const clientIndex = clientsData.findIndex(c => c.name === companyName);
+            
+            if (clientIndex === -1) {
+                clientsData.push({
+                    name: companyName,
+                    modules: activeModules,
+                    progress: userProgress,
+                    createdAt: new Date().toISOString(),
+                    lastAccess: new Date().toISOString()
+                });
+            } else {
+                clientsData[clientIndex].progress = userProgress;
+                clientsData[clientIndex].lastAccess = new Date().toISOString();
+            }
+
+            localStorage.setItem('fiducia_clients_data', JSON.stringify(clientsData));
         }
 
         // Mostrar login admin
@@ -976,8 +1273,10 @@
         function showAdminPanel() {
             document.getElementById('admin-panel').style.display = 'block';
             document.getElementById('adminBadge').style.display = 'block';
+            document.getElementById('adminTabs').style.display = 'flex';
             document.getElementById('dashboard').style.display = 'none';
 
+            // Renderizar checkboxes
             const container = document.getElementById('adminModulesCheckbox');
             container.innerHTML = '';
             
@@ -991,6 +1290,22 @@
                 `;
                 container.appendChild(div);
             });
+
+            refreshAdminData();
+        }
+
+        // Switch admin tabs
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(`admin-tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'dashboard') refreshAdminData();
+            if (tabName === 'clients') renderClientsTable();
+            if (tabName === 'history') renderHistoryTable();
+            if (tabName === 'reports') renderReportsTable();
         }
 
         // Aplicar template
@@ -1017,13 +1332,27 @@
             }
 
             const company = document.getElementById('adminCompanyName').value.trim();
+            const email = document.getElementById('adminCompanyEmail').value.trim();
+
+            if (!company) {
+                alert('⚠️ Digite o nome da empresa!');
+                return;
+            }
             
             generatedLink = baseUrl + '?modulos=' + selectedModules.join(',');
-            if (company) {
-                generatedLink += '&empresa=' + encodeURIComponent(company);
-            } else {
-                generatedLink += '&empresa=';
-            }
+            generatedLink += '&empresa=' + encodeURIComponent(company);
+
+            // Salvar no histórico
+            generatedLinks.push({
+                id: Date.now(),
+                company: company,
+                email: email,
+                modules: selectedModules,
+                link: generatedLink,
+                createdAt: new Date().toISOString()
+            });
+
+            localStorage.setItem('fiducia_links', JSON.stringify(generatedLinks));
 
             document.getElementById('generatedLinkDisplay').textContent = generatedLink;
             document.getElementById('generatedLinkBox').style.display = 'block';
@@ -1033,13 +1362,280 @@
         // Copiar link gerado
         function copyGeneratedLink() {
             navigator.clipboard.writeText(generatedLink).then(() => {
-                alert('✅ Link copiado para a área de transferência!');
+                alert('✅ Link copiado!');
             });
         }
 
         // Testar link gerado
         function testGeneratedLink() {
             window.open(generatedLink, '_blank');
+        }
+
+        // Limpar formulário gerador
+        function clearGeneratorForm() {
+            document.getElementById('adminCompanyName').value = '';
+            document.getElementById('adminCompanyEmail').value = '';
+            document.querySelectorAll('#adminModulesCheckbox input').forEach(cb => cb.checked = false);
+            document.getElementById('generatedLinkBox').style.display = 'none';
+        }
+
+        // Refresh admin data
+        function refreshAdminData() {
+            // Stats
+            document.getElementById('stat-links').textContent = generatedLinks.length;
+            document.getElementById('stat-clients').textContent = clientsData.length;
+
+            let approved = 0;
+            let pending = 0;
+
+            clientsData.forEach(client => {
+                const progress = client.progress || {};
+                const modules = client.modules || [];
+                const completed = Object.keys(progress).filter(m => progress[m]?.passed).length;
+                
+                if (completed === modules.length && modules.length > 0) {
+                    approved++;
+                } else {
+                    pending++;
+                }
+            });
+
+            document.getElementById('stat-approved').textContent = approved;
+            document.getElementById('stat-pending').textContent = pending;
+
+            renderPendingTable();
+            renderApprovedTable();
+        }
+
+        // Renderizar tabela de pendentes
+        function renderPendingTable() {
+            const container = document.getElementById('pending-table');
+            const pending = clientsData.filter(client => {
+                const progress = client.progress || {};
+                const modules = client.modules || [];
+                const completed = Object.keys(progress).filter(m => progress[m]?.passed).length;
+                return completed < modules.length;
+            }).slice(0, 5);
+
+            if (pending.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>✅ Nenhum cliente pendente</p></div>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Cliente</th><th>Módulos</th><th>Progresso</th></tr></thead><tbody>';
+            
+            pending.forEach(client => {
+                const progress = client.progress || {};
+                const modules = client.modules || [];
+                const completed = Object.keys(progress).filter(m => progress[m]?.passed).length;
+                const percentage = modules.length > 0 ? (completed / modules.length * 100) : 0;
+
+                html += `
+                    <tr>
+                        <td><strong>${client.name}</strong></td>
+                        <td>${modules.length} módulos</td>
+                        <td>
+                            ${completed}/${modules.length} (${Math.round(percentage)}%)
+                            <div class="progress-bar-inline">
+                                <div class="progress-fill-inline" style="width: ${percentage}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Renderizar tabela de aprovados
+        function renderApprovedTable() {
+            const container = document.getElementById('approved-table');
+            const approved = clientsData.filter(client => {
+                const progress = client.progress || {};
+                const modules = client.modules || [];
+                const completed = Object.keys(progress).filter(m => progress[m]?.passed).length;
+                return completed === modules.length && modules.length > 0;
+            }).slice(0, 5);
+
+            if (approved.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>Nenhuma aprovação ainda</p></div>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Cliente</th><th>Módulos</th><th>Data</th></tr></thead><tbody>';
+            
+            approved.forEach(client => {
+                const date = new Date(client.lastAccess).toLocaleDateString('pt-BR');
+                html += `
+                    <tr>
+                        <td><strong>${client.name}</strong></td>
+                        <td><span class="badge badge-success">${client.modules.length} concluídos</span></td>
+                        <td>${date}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Renderizar tabela de clientes
+        function renderClientsTable() {
+            const container = document.getElementById('clients-table');
+            
+            if (clientsData.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>Nenhum cliente cadastrado</p></div>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Cliente</th><th>Módulos</th><th>Progresso</th><th>Status</th></tr></thead><tbody>';
+            
+            clientsData.forEach(client => {
+                const progress = client.progress || {};
+                const modules = client.modules || [];
+                const completed = Object.keys(progress).filter(m => progress[m]?.passed).length;
+                const percentage = modules.length > 0 ? (completed / modules.length * 100) : 0;
+                
+                let statusBadge = '<span class="badge badge-warning">Pendente</span>';
+                if (completed === modules.length && modules.length > 0) {
+                    statusBadge = '<span class="badge badge-success">Aprovado</span>';
+                }
+
+                html += `
+                    <tr>
+                        <td><strong>${client.name}</strong></td>
+                        <td>${modules.length}</td>
+                        <td>
+                            ${completed}/${modules.length} (${Math.round(percentage)}%)
+                            <div class="progress-bar-inline">
+                                <div class="progress-fill-inline" style="width: ${percentage}%"></div>
+                            </div>
+                        </td>
+                        <td>${statusBadge}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Renderizar histórico
+        function renderHistoryTable() {
+            const container = document.getElementById('history-table');
+            
+            if (generatedLinks.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>Nenhum link gerado</p></div>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Data</th><th>Cliente</th><th>Módulos</th><th>Ações</th></tr></thead><tbody>';
+            
+            [...generatedLinks].reverse().forEach(link => {
+                const date = new Date(link.createdAt).toLocaleDateString('pt-BR');
+                html += `
+                    <tr>
+                        <td>${date}</td>
+                        <td><strong>${link.company}</strong></td>
+                        <td><span class="badge badge-info">${link.modules.length} módulos</span></td>
+                        <td>
+                            <button class="btn btn-small btn-copy" onclick="copySpecificLink('${link.link}')">📋</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Copiar link específico
+        function copySpecificLink(link) {
+            navigator.clipboard.writeText(link).then(() => {
+                alert('✅ Link copiado!');
+            });
+        }
+
+        // Renderizar relatórios
+        function renderReportsTable() {
+            const container = document.getElementById('reports-table');
+            const stats = {};
+
+            Object.keys(trainingModules).forEach(mod => {
+                stats[mod] = { total: 0, approved: 0, failed: 0, pending: 0 };
+            });
+
+            clientsData.forEach(client => {
+                (client.modules || []).forEach(mod => {
+                    stats[mod].total++;
+                    const progress = (client.progress || {})[mod];
+                    if (progress) {
+                        if (progress.passed) stats[mod].approved++;
+                        else stats[mod].failed++;
+                    } else {
+                        stats[mod].pending++;
+                    }
+                });
+            });
+
+            let html = '<table><thead><tr><th>Módulo</th><th>Total</th><th>Aprovados</th><th>Reprovados</th><th>Pendentes</th><th>Taxa</th></tr></thead><tbody>';
+            
+            Object.keys(trainingModules).forEach(mod => {
+                const s = stats[mod];
+                const rate = s.total > 0 ? (s.approved / s.total * 100) : 0;
+                
+                html += `
+                    <tr>
+                        <td><strong>${trainingModules[mod].title}</strong></td>
+                        <td>${s.total}</td>
+                        <td><span class="badge badge-success">${s.approved}</span></td>
+                        <td><span class="badge badge-danger">${s.failed}</span></td>
+                        <td><span class="badge badge-warning">${s.pending}</span></td>
+                        <td>
+                            ${Math.round(rate)}%
+                            <div class="progress-bar-inline">
+                                <div class="progress-fill-inline" style="width: ${rate}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Exportar clientes
+        function exportClients() {
+            let csv = 'Cliente,Módulos,Completos,Pendentes,Status\n';
+            clientsData.forEach(client => {
+                const progress = client.progress || {};
+                const modules = client.modules || [];
+                const completed = Object.keys(progress).filter(m => progress[m]?.passed).length;
+                const status = completed === modules.length && modules.length > 0 ? 'Aprovado' : 'Pendente';
+                csv += `"${client.name}",${modules.length},${completed},${modules.length - completed},"${status}"\n`;
+            });
+            downloadCSV(csv, 'clientes.csv');
+        }
+
+        // Exportar histórico
+        function exportHistory() {
+            let csv = 'Data,Cliente,Email,Módulos,Link\n';
+            generatedLinks.forEach(link => {
+                const date = new Date(link.createdAt).toLocaleString('pt-BR');
+                csv += `"${date}","${link.company}","${link.email || ''}",${link.modules.length},"${link.link}"\n`;
+            });
+            downloadCSV(csv, 'historico.csv');
+        }
+
+        // Download CSV
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
         }
 
         // Carregar Dashboard
@@ -1115,7 +1711,6 @@
                 `;
             });
 
-            // Mostrar aviso de tentativas
             const attempts = userProgress[moduleId]?.attempts || 0;
             const remainingAttempts = MAX_ATTEMPTS - attempts;
             const warningDiv = document.getElementById('attemptsWarning');
@@ -1123,7 +1718,7 @@
             if (attempts > 0 && !userProgress[moduleId]?.passed) {
                 warningDiv.innerHTML = `
                     <div class="alert alert-warning">
-                        ⚠️ Você já tentou esta avaliação ${attempts} vez(es). Restam ${remainingAttempts} tentativa(s).
+                        ⚠️ Você já tentou ${attempts} vez(es). Restam ${remainingAttempts} tentativa(s).
                     </div>
                 `;
             } else {
@@ -1141,20 +1736,18 @@
             const remainingAttempts = MAX_ATTEMPTS - attempts;
 
             if (attempts >= MAX_ATTEMPTS) {
-                alert('❌ Você esgotou todas as tentativas para este módulo.');
+                alert('❌ Tentativas esgotadas.');
                 return;
             }
 
-            const confirmed = confirm(
+            if (confirm(
                 `⚠️ ATENÇÃO!\n\n` +
-                `• Você tem ${QUIZ_TIME_MINUTES} minutos para completar a prova\n` +
-                `• Após iniciar, NÃO poderá voltar até finalizar\n` +
-                `• Esta é sua tentativa ${attempts + 1} de ${MAX_ATTEMPTS}\n` +
-                `• As perguntas serão apresentadas em ordem aleatória\n\n` +
-                `Deseja iniciar a avaliação agora?`
-            );
-
-            if (confirmed) {
+                `• ${QUIZ_TIME_MINUTES} minutos para completar\n` +
+                `• Não poderá voltar até finalizar\n` +
+                `• Tentativa ${attempts + 1} de ${MAX_ATTEMPTS}\n` +
+                `• Perguntas em ordem aleatória\n\n` +
+                `Iniciar agora?`
+            )) {
                 startQuiz();
             }
         }
@@ -1166,11 +1759,9 @@
             const quizContent = document.getElementById('quizContent');
             quizContent.innerHTML = '';
 
-            // Embaralhar perguntas
             const shuffledQuestions = shuffleArray(module.questions);
 
             shuffledQuestions.forEach((q, index) => {
-                // Embaralhar opções mas manter track da resposta correta
                 const optionsWithIndex = q.options.map((opt, i) => ({ text: opt, isCorrect: i === q.correct }));
                 const shuffledOptions = shuffleArray(optionsWithIndex);
                 
@@ -1189,18 +1780,13 @@
                 `;
             });
 
-            // Iniciar timer
             startTimer();
-
             document.getElementById('training-section').style.display = 'none';
             document.getElementById('quiz-section').style.display = 'block';
             window.scrollTo(0, 0);
 
-            // Prevenir saída da página
             window.onbeforeunload = function() {
-                if (quizInProgress) {
-                    return "A prova está em andamento. Se sair, perderá esta tentativa.";
-                }
+                if (quizInProgress) return "A prova está em andamento.";
             };
         }
 
@@ -1214,16 +1800,14 @@
                 timeRemaining--;
                 updateTimerDisplay();
 
-                // Aviso quando faltar 5 minutos
                 if (timeRemaining === 300) {
                     document.getElementById('timerContainer').classList.add('warning');
-                    alert('⏰ Atenção! Restam apenas 5 minutos!');
+                    alert('⏰ 5 minutos restantes!');
                 }
 
-                // Tempo esgotado
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
-                    alert('⏰ Tempo esgotado! A prova será enviada automaticamente.');
+                    alert('⏰ Tempo esgotado!');
                     submitQuiz();
                 }
             }, 1000);
@@ -1252,24 +1836,15 @@
         function submitQuiz() {
             stopTimer();
 
-            const module = trainingModules[currentModule];
             let score = 0;
-            const totalQuestions = 10;
-
-            // Contar respostas corretas
-            for (let i = 0; i < totalQuestions; i++) {
+            for (let i = 0; i < 10; i++) {
                 const answer = document.querySelector(`input[name="q${i}"]:checked`);
-                if (answer && answer.value === "1") {
-                    score++;
-                }
+                if (answer && answer.value === "1") score++;
             }
 
             const passed = score >= 6;
-
-            // Atualizar tentativas
             const currentAttempts = userProgress[currentModule]?.attempts || 0;
 
-            // Salvar progresso
             userProgress[currentModule] = {
                 score: score,
                 passed: passed,
@@ -1283,25 +1858,25 @@
             const storageKey = `training_progress_${modulesParam || 'default'}`;
             localStorage.setItem(storageKey, JSON.stringify(userProgress));
 
-            // Mostrar resultado
+            saveClientData();
+
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('result-section').style.display = 'block';
             document.getElementById('score').textContent = `${score}/10`;
 
             let feedback = '';
             let certificateHTML = '';
-
             const remainingAttempts = MAX_ATTEMPTS - userProgress[currentModule].attempts;
 
             if (passed) {
-                feedback = '🎉 Parabéns! Você foi aprovado neste módulo!';
+                feedback = '🎉 Parabéns! Aprovado!';
                 certificateHTML = generateCertificate(score);
                 document.getElementById('printBtn').style.display = 'inline-block';
             } else if (remainingAttempts > 0) {
-                feedback = `📚 Você não atingiu a nota mínima (6 acertos). Você ainda tem ${remainingAttempts} tentativa(s). Revise o conteúdo e tente novamente.`;
+                feedback = `📚 Não atingiu 6 acertos. ${remainingAttempts} tentativa(s) restante(s).`;
                 document.getElementById('printBtn').style.display = 'none';
             } else {
-                feedback = '❌ Você não atingiu a nota mínima e esgotou todas as tentativas para este módulo.';
+                feedback = '❌ Tentativas esgotadas.';
                 document.getElementById('printBtn').style.display = 'none';
             }
 
@@ -1333,7 +1908,7 @@
         // Navegação
         function backToDashboard() {
             if (quizInProgress) {
-                alert('⚠️ Você precisa finalizar a prova antes de voltar!');
+                alert('⚠️ Finalize a prova!');
                 return;
             }
 
@@ -1343,16 +1918,6 @@
             document.getElementById('result-section').style.display = 'none';
             document.getElementById('dashboard').style.display = 'block';
             loadDashboard();
-            window.scrollTo(0, 0);
-        }
-
-        function backToTraining() {
-            if (quizInProgress) {
-                alert('⚠️ Você não pode voltar durante a prova!');
-                return;
-            }
-            document.getElementById('quiz-section').style.display = 'none';
-            document.getElementById('training-section').style.display = 'block';
             window.scrollTo(0, 0);
         }
 
