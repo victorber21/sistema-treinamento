@@ -1,6 +1,6 @@
 // ============================================
 // FIDÚCIA ACADEMY - SISTEMA DE TREINAMENTO
-// ============================================
+// ============================================z
 // Versão: 2.0
 // Data: 21/01/2025
 // ============================================
@@ -204,8 +204,6 @@ let timeRemaining = 1800;
 let generatedLinks = [];
 let clientsData = [];
 let currentEditingModuleId = null;
-let lessonCount = 0;
-let questionCount = 0;
 
 
 // ============================================
@@ -631,14 +629,27 @@ function renderModulesListTable() {
     container.innerHTML = html;
 }
 
+function generateIdFromTitle() {
+    const title = document.getElementById('module-title').value.trim();
+    if (title) {
+        const id = title
+            .toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s]/g, '')
+            .replace(/\s+/g, '_');
+        
+        document.getElementById('module-id').value = id;
+    }
+}
+
 function openCreateModuleModal() {
     currentEditingModuleId = null;
-    lessonCount = 0;
-    questionCount = 0;
     
     document.getElementById('moduleEditorTitle').textContent = '➕ Criar Novo Módulo';
     document.getElementById('module-id').value = '';
-    document.getElementById('module-id').disabled = false;
+    document.getElementById('module-id').setAttribute('readonly', true);
+    document.getElementById('module-id').style.background = '#f3f4f6';
+    document.getElementById('module-id').style.cursor = 'not-allowed';
     document.getElementById('module-title').value = '';
     document.getElementById('module-description').value = '';
     document.getElementById('lessonsContainer').innerHTML = '';
@@ -651,6 +662,10 @@ function openCreateModuleModal() {
     for (let i = 0; i < 10; i++) addQuestion();
     
     document.getElementById('moduleEditorModal').classList.add('active');
+
+    const titleField = document.getElementById('module-title');
+    titleField.removeEventListener('input', generateIdFromTitle); // Remove se já existe
+    titleField.addEventListener('input', generateIdFromTitle);
 }
 
 function openEditModuleModal(moduleId) {
@@ -659,7 +674,9 @@ function openEditModuleModal(moduleId) {
     
     document.getElementById('moduleEditorTitle').textContent = '✏️ Editar Módulo';
     document.getElementById('module-id').value = moduleId;
-    document.getElementById('module-id').disabled = true;
+    document.getElementById('module-id').setAttribute('readonly', true);
+    document.getElementById('module-id').style.background = '#f3f4f6';
+    document.getElementById('module-id').style.cursor = 'not-allowed';
     document.getElementById('module-title').value = module.title;
     document.getElementById('module-description').value = module.description;
     
@@ -685,13 +702,13 @@ function closeModuleEditor() {
 }
 
 function addLesson(lesson = null) {
-    lessonCount++;
     const container = document.getElementById('lessonsContainer');
+    const currentCount = container.querySelectorAll('.lesson-item').length + 1;
     const div = document.createElement('div');
     div.className = 'lesson-item';
     div.innerHTML = `
-        <button class="btn btn-small btn-danger remove-btn" onclick="this.parentElement.remove()">🗑️ Remover</button>
-        <h4>Lição ${lessonCount}</h4>
+        <button class="btn btn-small btn-danger remove-btn" onclick="this.parentElement.remove(); updateLessonNumbers()">🗑️ Remover</button>
+        <h4 class="lesson-number">Lição ${currentCount}</h4>
         <div class="form-group">
             <label>Título da Lição:</label>
             <input type="text" class="lesson-title" value="${lesson ? lesson.title : ''}" placeholder="ex: Introdução ao Produto">
@@ -704,14 +721,24 @@ function addLesson(lesson = null) {
     container.appendChild(div);
 }
 
+function updateLessonNumbers() {
+    const lessons = document.querySelectorAll('#lessonsContainer .lesson-item');
+    lessons.forEach((lesson, index) => {
+        const numberElement = lesson.querySelector('.lesson-number');
+        if (numberElement) {
+            numberElement.textContent = `Lição ${index + 1}`;
+        }
+    });
+}
+
 function addQuestion(question = null) {
-    questionCount++;
     const container = document.getElementById('questionsContainer');
+    const currentCount = container.querySelectorAll('.question-item').length + 1;
     const div = document.createElement('div');
     div.className = 'question-item';
     div.innerHTML = `
-        <button class="btn btn-small btn-danger remove-btn" onclick="this.parentElement.remove()">🗑️ Remover</button>
-        <h4>Questão ${questionCount}</h4>
+        <button class="btn btn-small btn-danger remove-btn" onclick="this.parentElement.remove(); updateQuestionNumbers()">🗑️ Remover</button>
+        <h4 class="question-number">Questão ${currentCount}</h4>
         <div class="form-group">
             <label>Pergunta:</label>
             <input type="text" class="question-text" value="${question ? question.question : ''}" placeholder="Digite a pergunta">
@@ -734,6 +761,16 @@ function addQuestion(question = null) {
         </div>
     `;
     container.appendChild(div);
+}
+
+function updateQuestionNumbers() {
+    const questions = document.querySelectorAll('#questionsContainer .question-item');
+    questions.forEach((question, index) => {
+        const numberElement = question.querySelector('.question-number');
+        if (numberElement) {
+            numberElement.textContent = `Questão ${index + 1}`;
+        }
+    });
 }
 
 function saveModule() {
@@ -762,9 +799,10 @@ function saveModule() {
         }
     });
     
-    if (lessons.length < 3) {
-        alert('⚠️ Adicione pelo menos 3 lições!');
-        return;
+    if (lessons.length === 0) {
+        if (!confirm('⚠️ Você não adicionou nenhuma lição. Deseja continuar mesmo assim?')) {
+            return;
+        }
     }
     
     // Coletar questões
@@ -788,9 +826,10 @@ function saveModule() {
         }
     });
     
-    if (questions.length !== 10) {
-        alert(`⚠️ Você precisa ter exatamente 10 questões completas! (Atual: ${questions.length})`);
-        return;
+    if (questions.length === 0) {
+        if (!confirm('⚠️ Você não adicionou nenhuma questão. Deseja continuar mesmo assim?')) {
+            return;
+        }
     }
     
     // Salvar módulo
@@ -804,7 +843,7 @@ function saveModule() {
     // Salvar no localStorage
     localStorage.setItem('fiducia_custom_modules', JSON.stringify(trainingModules));
     
-    alert('✅ Módulo salvo com sucesso!');
+    alert(`✅ Módulo "${title}" salvo com sucesso!\n\n📚 ${lessons.length} lição(ões)\n❓ ${questions.length} questão(ões)`);
     closeModuleEditor();
     renderModulesListTable();
     
