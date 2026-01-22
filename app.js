@@ -1127,8 +1127,8 @@ function submitQuiz() {
     const remainingAttempts = MAX_ATTEMPTS - userProgress[currentModule].attempts;
 
     if (passed) {
-        feedback = `🎉 Parabéns! Você foi aprovado neste módulo! (${percentage}% de aproveitamento)`;
-        certificateHTML = generateCertificate(score);
+        feedback = `🎉 Parabéns! Você foi aprovado neste módulo com ${percentage}% de aproveitamento!`;
+        certificateHTML = generateCertificate(score, totalQuestions, percentage);
         document.getElementById('printBtn').style.display = 'inline-block';
     } else if (remainingAttempts > 0) {
         feedback = `📚 Você não atingiu a nota mínima (${minimumScore} acertos - 60%). Você ainda tem ${remainingAttempts} tentativa(s). Revise o conteúdo e tente novamente.`;
@@ -1147,7 +1147,7 @@ function submitQuiz() {
 // 13. CERTIFICADOS
 // ============================================
 
-function generateCertificate(score) {
+function generateCertificate(score, totalQuestions, percentage) {
     const date = new Date().toLocaleDateString('pt-BR');
     const module = trainingModules[currentModule];
     const displayName = companyName || 'o colaborador';
@@ -1159,7 +1159,7 @@ function generateCertificate(score) {
             <p class="company">${displayName}</p>
             <p>concluiu com êxito o treinamento de</p>
             <p><strong>${module.title}</strong></p>
-            <p>com aproveitamento de <strong>${score}/10 (${(score/10*100)}%)</strong></p>
+            <p>com aproveitamento de <strong>${score}/${totalQuestions} (${percentage}%)</strong></p>
             <p style="margin-top: 30px;">Data: ${date}</p>
             <p style="margin-top: 20px; font-size: 14px; color: #6b7280;">Fidúcia Academy</p>
         </div>
