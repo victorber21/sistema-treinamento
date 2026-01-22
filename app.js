@@ -1112,7 +1112,8 @@ function submitQuiz() {
 
     const urlParams = new URLSearchParams(window.location.search);
     const modulesParam = urlParams.get('modulos');
-    const storageKey = `training_progress_${modulesParam || 'default'}`;
+    const companySlug = companyName ? companyName.toLowerCase().replace(/[^a-z0-9]/g, '_') : 'default';
+    const storageKey = `training_progress_${companySlug}_${modulesParam || 'default'}`;
     localStorage.setItem(storageKey, JSON.stringify(userProgress));
 
     saveClientData();
@@ -1221,7 +1222,9 @@ function init() {
         activeModules = Object.keys(trainingModules);
     }
 
-    const storageKey = `training_progress_${modulesParam || 'default'}`;
+    // Criar chave única combinando módulos + empresa
+    const companySlug = companyName ? companyName.toLowerCase().replace(/[^a-z0-9]/g, '_') : 'default';
+    const storageKey = `training_progress_${companySlug}_${modulesParam || 'default'}`;
     const savedProgress = localStorage.getItem(storageKey);
     if (savedProgress) {
         userProgress = JSON.parse(savedProgress);
