@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fidúcia Academy - Sistema de Treinamento</title>
+    <style>
+        /* ============================================
+           RESET E BASE
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* ============================================
+           CONTAINER PRINCIPAL
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .header {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .admin-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fbbf24;
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* ============================================
+           TIMER
+           ============================================ */
+        .timer-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ef4444;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+
+        .timer-container.warning {
+            background: #f59e0b;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* ============================================
+           LOGIN ADMIN
+           ============================================ */
+        .admin-login {
+            display: none;
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .admin-login h2 {
+            color: #059669;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .admin-login input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .admin-login input:focus {
+            outline: none;
+            border-color: #059669;
+        }
+
+        .admin-login .error {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* ============================================
+           CONTENT AREA
+           ============================================ */
+        .content {
+            padding: 30px;
+        }
+
+        /* ============================================
+           ADMIN TABS
+           ============================================ */
+        .admin-tabs {
+            background: #f0fdf4;
+            padding: 0;
+            border-bottom: 2px solid #059669;
+            display: none;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #047857;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(5, 150, 105, 0.1);
+        }
+
+        .tab-btn.active {
+            color: #059669;
+            border-bottom-color: #059669;
+            background: white;
+        }
+
+        /* ============================================
+           ADMIN PANEL
+           ============================================ */
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .admin-tab-content.active {
+            display: block;
+        }
+
+        .admin-section {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .admin-section h3 {
+            color: #047857;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        /* ============================================
+           STATS CARDS
+           ============================================ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card.clickable {
+            cursor: pointer;
+        }
+
+        .stat-card.clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
+            border-color: #059669;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #059669;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #047857;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* ============================================
+           TABLES
+           ============================================ */
+        .table-container {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .table-header {
+            background: #f9fafb;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h4 {
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f9fafb;
+            padding: 10px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #1f2937;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+
+        /* ============================================
+           BADGES
+           ============================================ */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge.clickable {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .badge.clickable:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* ============================================
+           PROGRESS BARS
+           ============================================ */
+        .progress-bar {
+            background: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #059669 0%, #047857 100%);
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .progress-bar-inline {
+            background: #e5e7eb;
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            display: inline-block;
+            width: 100px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .progress-fill-inline {
+            height: 100%;
+            background: linear-gradient(90deg, #059669 0%, #047857 100%);
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #047857;
+            font-size: 14px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        /* ============================================
+           FORMS
+           ============================================ */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #059669;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group small {
+            color: #6b7280;
+            font-size: 12px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* ============================================
+           CHECKBOXES
+           ============================================ */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #e5e7eb;
+        }
+
+        .checkbox-item:hover {
+            background: #d1fae5;
+        }
+
+        .checkbox-item input {
+            margin-right: 8px;
+            cursor: pointer;
+            width: auto;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+            font-size: 13px;
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            margin: 5px;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(5, 150, 105, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+            box-shadow: 0 5px 15px rgba(107, 114, 128, 0.4);
+        }
+
+        .btn-copy {
+            background: #3b82f6;
+        }
+
+        .btn-copy:hover {
+            background: #2563eb;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-export {
+            background: #8b5cf6;
+        }
+
+        .btn-export:hover {
+            background: #7c3aed;
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        /* ============================================
+           GENERATED LINK BOX
+           ============================================ */
+        .generated-link-box {
+            display: none;
+            background: #dbeafe;
+            border: 2px solid #3b82f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .generated-link-box h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .link-display {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #93c5fd;
+        }
+
+        /* ============================================
+           MODALS
+           ============================================ */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-content.large {
+            max-width: 900px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .modal-header h3 {
+            color: #059669;
+            font-size: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #6b7280;
+            line-height: 1;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+
+        .module-tag {
+            display: inline-block;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin: 5px;
+            font-weight: 500;
+        }
+
+        /* ============================================
+           MODULE EDITOR SPECIFIC
+           ============================================ */
+        .lesson-item,
+        .question-item {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 3px solid #059669;
+        }
+
+        .lesson-item h4,
+        .question-item h4 {
+            color: #047857;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .remove-btn {
+            float: right;
+            padding: 4px 10px;
+            font-size: 11px;
+        }
+
+        /* ============================================
+           DASHBOARD (CLIENTES)
+           ============================================ */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .module-card {
+            background: linear-gradient(to bottom right, #f0fdf4, #dcfce7);
+            border: 2px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
+            border-color: #059669;
+        }
+
+        .module-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .module-card.locked:hover {
+            transform: none;
+        }
+
+        .module-card h3 {
+            color: #059669;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .module-card p {
+            color: #047857;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .module-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background: #fbbf24;
+            color: #000;
+        }
+
+        .status-completed {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-failed {
+            background: #ef4444;
+            color: white;
+        }
+
+        .attempts-info {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+
+        .welcome-box {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #059669;
+            border-radius: 12px;
+            padding: 18px 25px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
+        }
+
+        .welcome-box h2 {
+            color: #059669;
+            margin-bottom: 8px;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .welcome-box p {
+            color: #047857;
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* ============================================
+           TRAINING SECTIONS
+           ============================================ */
+        .training-section,
+        .quiz-section,
+        .result-section {
+            display: none;
+        }
+
+        .lesson {
+            background: #f0fdf4;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #059669;
+        }
+
+        .lesson h2 {
+            color: #059669;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .lesson p {
+            line-height: 1.8;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            background: #f0fdf4;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #059669;
+        }
+
+        .question h3 {
+            color: #1f2937;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #059669;
+            background: #d1fae5;
+        }
+
+        .option input {
+            margin-right: 10px;
+        }
+
+        /* ============================================
+           RESULTS & CERTIFICATE
+           ============================================ */
+        .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #059669;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .certificate {
+            border: 3px solid #059669;
+            padding: 40px;
+            margin: 30px 0;
+            background: linear-gradient(to bottom, #ffffff 0%, #f0fdf4 100%);
+            position: relative;
+        }
+
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid #047857;
+            pointer-events: none;
+        }
+
+        .certificate h2 {
+            color: #059669;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .certificate p {
+            font-size: 18px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .certificate .company {
+            font-size: 24px;
+            font-weight: bold;
+            color: #047857;
+            margin: 20px 0;
+        }
+
+        /* ============================================
+           ALERTS
+           ============================================ */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 2px solid #f59e0b;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 2px solid #ef4444;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 2px solid #3b82f6;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .timer-container {
+                top: 10px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 18px;
+            }
+            
+            .admin-tabs {
+                overflow-x: auto;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+        }
+
+        /* ============================================
+           PRINT
+           ============================================ */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .btn, .timer-container, .admin-panel, .admin-tabs, .admin-badge {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Timer -->
+    <div id="timerContainer" class="timer-container">
+        <span id="timerDisplay">30:00</span>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="admin-badge" id="adminBadge" style="display: none;">🔧 MODO ADMIN</div>
+            <h1>🎓 Fidúcia Academy</h1>
+            <p>Bem-vindo à plataforma de treinamento dos produtos Fidúcia</p>
+        </div>
+
+        <!-- Admin Tabs -->
+        <div class="admin-tabs" id="adminTabs">
+            <button class="tab-btn active" onclick="switchAdminTab('dashboard')">📊 Dashboard</button>
+            <button class="tab-btn" onclick="switchAdminTab('generator')">🔗 Gerar Links</button>
+            <button class="tab-btn" onclick="switchAdminTab('history')">📋 Histórico</button>
+            <button class="tab-btn" onclick="switchAdminTab('modules')">⚙️ Gerenciar Módulos</button>
+        </div>
+
+        <div class="content">
+            <!-- Login Admin -->
+            <div id="admin-login" class="admin-login">
+                <h2>🔐 Acesso Administrativo</h2>
+                <input type="password" id="adminPassword" placeholder="Digite a senha" onkeypress="if(event.key==='Enter') checkAdminPassword()">
+                <div class="error" id="loginError">❌ Senha incorreta!</div>
+                <button class="btn" style="width: 100%;" onclick="checkAdminPassword()">Entrar</button>
+            </div>
+
+            <!-- Admin Panel -->
+            <div id="admin-panel" class="admin-panel">
+                <!-- TAB: Dashboard -->
+                <div id="admin-tab-dashboard" class="admin-tab-content active">
+                    <h2 style="color: #059669; margin-bottom: 20px;">📊 Dashboard</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card clickable" onclick="switchAdminTab('history')">
+                            <div class="stat-label">Links Gerados</div>
+                            <div class="stat-number" id="stat-links">0</div>
+                            <small style="color: #6b7280; font-size: 11px;">👆 Clique para ver histórico</small>
+                        </div>
+                        <div class="stat-card clickable" onclick="showApprovedDetails()">
+                            <div class="stat-label">Aprovados</div>
+                            <div class="stat-number" id="stat-approved">0</div>
+                            <small style="color: #6b7280; font-size: 11px;">👆 Clique para detalhes</small>
+                        </div>
+                        <div class="stat-card clickable" onclick="showPendingDetails()">
+                            <div class="stat-label">Pendentes</div>
+                            <div class="stat-number" id="stat-pending">0</div>
+                            <small style="color: #6b7280; font-size: 11px;">👆 Clique para detalhes</small>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h4>Clientes Pendentes</h4>
+                            <button class="btn btn-small" onclick="refreshAdminData()">🔄 Atualizar</button>
+                        </div>
+                        <div id="pending-table"></div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h4>Aprovações Recentes</h4>
+                        </div>
+                        <div id="approved-table"></div>
+                    </div>
+                </div>
+
+                <!-- TAB: Gerar Links -->
+                <div id="admin-tab-generator" class="admin-tab-content">
+                    <h2 style="color: #059669; margin-bottom: 20px;">🔗 Gerador de Links</h2>
+                    
+                    <div class="admin-section">
+                        <h3>1️⃣ Selecione os Módulos</h3>
+                        <div class="checkbox-grid" id="adminModulesCheckbox"></div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h3>2️⃣ Informações do Cliente</h3>
+                        <div class="form-group">
+                            <label>Nome da Empresa: *</label>
+                            <input type="text" id="adminCompanyName" placeholder="Ex: Banco ABC Ltda">
+                        </div>
+                        <div class="form-group">
+                            <label>Email (opcional):</label>
+                            <input type="email" id="adminCompanyEmail" placeholder="contato@empresa.com">
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="generateAdminLink()">🚀 Gerar Link</button>
+                    <button class="btn btn-secondary" onclick="clearGeneratorForm()">🔄 Limpar</button>
+
+                    <div id="generatedLinkBox" class="generated-link-box">
+                        <h4>✅ Link Gerado com Sucesso!</h4>
+                        <div class="link-display" id="generatedLinkDisplay"></div>
+                        <button class="btn btn-copy btn-small" onclick="copyGeneratedLink()">📋 Copiar</button>
+                        <button class="btn btn-secondary btn-small" onclick="testGeneratedLink()">🔍 Testar</button>
+                    </div>
+                </div>
+
+                <!-- TAB: Histórico -->
+                <div id="admin-tab-history" class="admin-tab-content">
+                    <h2 style="color: #059669; margin-bottom: 20px;">📋 Histórico de Links</h2>
+                    
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h4>Links Gerados</h4>
+                            <button class="btn btn-small btn-export" onclick="exportHistory()">📥 Exportar CSV</button>
+                        </div>
+                        <div id="history-table"></div>
+                    </div>
+                </div>
+
+                <!-- TAB: Gerenciar Módulos -->
+                <div id="admin-tab-modules" class="admin-tab-content">
+                    <h2 style="color: #059669; margin-bottom: 20px;">⚙️ Gerenciar Módulos</h2>
+                    
+                    <button class="btn" onclick="openCreateModuleModal()" style="margin-bottom: 20px;">➕ Criar Novo Módulo</button>
+                    
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h4>Módulos Existentes</h4>
+                        </div>
+                        <div id="modules-list-table"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <button class="btn btn-secondary" onclick="logout()">🚪 Sair do Painel Admin</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Normal (Clientes) -->
+            <div id="dashboard">
+                <div class="welcome-box">
+                    <h2>Bem-vindo!</h2>
+                    <p>Complete todos os treinamentos disponíveis abaixo para obter seus certificados.</p>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText"></div>
+                
+                <div class="modules-grid" id="modulesGrid"></div>
+            </div>
+
+            <!-- Training Content -->
+            <div id="training-section" class="training-section">
+                <button class="btn btn-secondary" onclick="backToDashboard()" style="margin-bottom: 20px;">← Voltar aos Módulos</button>
+                <div id="trainingContent"></div>
+                <div id="attemptsWarning"></div>
+                <button class="btn" id="startQuizBtn" onclick="confirmStartQuiz()">Iniciar Avaliação (10 questões - 30 minutos)</button>
+            </div>
+
+            <!-- Quiz Section -->
+            <div id="quiz-section" class="quiz-section">
+                <div class="alert alert-warning">
+                    ⚠️ <strong>Atenção:</strong> A prova está em andamento. Você não pode voltar até finalizar. Tempo: <span id="quizTimer">30:00</span>
+                </div>
+                <h2 style="color: #059669; margin-bottom: 20px;">Avaliação em Andamento</h2>
+                <p style="margin-bottom: 20px; color: #6b7280;"><strong>Responda as 10 questões. Você precisa acertar no mínimo 6 para ser aprovado.</strong></p>
+                <div id="quizContent"></div>
+                <button class="btn" onclick="submitQuiz()">Enviar Respostas</button>
+            </div>
+
+            <!-- Result Section -->
+            <div id="result-section" class="result-section">
+                <h2 style="color: #059669; margin-bottom: 20px;">Resultado da Avaliação</h2>
+                <div class="score" id="score"></div>
+                <p id="feedback" style="font-size: 20px; margin: 20px 0; text-align: center;"></p>
+                <div id="certificate-container"></div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="window.print()" id="printBtn" style="display:none;">🖨️ Imprimir Certificado</button>
+                    <button class="btn btn-secondary" onclick="backToDashboard()">← Voltar aos Módulos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    
+    <!-- Modal: Detalhes dos Módulos -->
+    <div id="modulesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📦 Módulos Selecionados</h3>
+                <button class="modal-close" onclick="closeModal('modulesModal')">&times;</button>
+            </div>
+            <div id="modalModulesContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal: Criar/Editar Módulo -->
+    <div id="moduleEditorModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="moduleEditorTitle">➕ Criar Novo Módulo</h3>
+                <button class="modal-close" onclick="closeModuleEditor()">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label>ID do Módulo: *</label>
+                <input type="text" id="module-id" placeholder="ex: novo_modulo">
+                <small>Apenas letras minúsculas, números e underscore</small>
+            </div>
+
+            <div class="form-group">
+                <label>Título: *</label>
+                <input type="text" id="module-title" placeholder="ex: Novo Produto">
+            </div>
+
+            <div class="form-group">
+                <label>Descrição: *</label>
+                <input type="text" id="module-description" placeholder="Breve descrição do módulo">
+            </div>
+
+            <h4 style="color: #059669; margin: 20px 0 10px;">📚 Conteúdo das Lições (mínimo 3)</h4>
+            <div id="lessonsContainer"></div>
+            <button class="btn btn-secondary btn-small" onclick="addLesson()">➕ Adicionar Lição</button>
+
+            <h4 style="color: #059669; margin: 20px 0 10px;">❓ Questões (exatamente 10)</h4>
+            <div id="questionsContainer"></div>
+            <button class="btn btn-secondary btn-small" onclick="addQuestion()">➕ Adicionar Questão</button>
+
+            <div style="margin-top: 30px; text-align: right;">
+                <button class="btn btn-secondary" onclick="closeModuleEditor()">Cancelar</button>
+                <button class="btn" onclick="saveModule()">💾 Salvar Módulo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Detalhes Aprovados -->
+    <div id="approvedModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✅ Clientes Aprovados</h3>
+                <button class="modal-close" onclick="closeModal('approvedModal')">&times;</button>
+            </div>
+            <div id="approvedModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal: Detalhes Pendentes -->
+    <div id="pendingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⏳ Clientes Pendentes</h3>
+                <button class="modal-close" onclick="closeModal('pendingModal')">&times;</button>
+            </div>
+            <div id="pendingModalContent"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
