@@ -1120,7 +1120,7 @@ function submitQuiz() {
 
     document.getElementById('quiz-section').style.display = 'none';
     document.getElementById('result-section').style.display = 'block';
-    document.getElementById('score').textContent = `${score}/10`;
+    document.getElementById('score').textContent = `${score}/${totalQuestions}`;
 
     let feedback = '';
     let certificateHTML = '';
