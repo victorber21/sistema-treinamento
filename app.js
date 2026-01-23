@@ -978,6 +978,9 @@ function backToDashboard() {
 function confirmStartQuiz() {
     const attempts = userProgress[currentModule]?.attempts || 0;
     const remainingAttempts = MAX_ATTEMPTS - attempts;
+    const module = trainingModules[currentModule];
+    const totalQuestions = module.questions.length;
+    const minimumScore = Math.ceil(totalQuestions * 0.6);
 
     if (attempts >= MAX_ATTEMPTS) {
         alert('❌ Você esgotou todas as tentativas para este módulo.');
@@ -987,6 +990,8 @@ function confirmStartQuiz() {
     if (confirm(
         `⚠️ ATENÇÃO!\n\n` +
         `• Você tem ${QUIZ_TIME_MINUTES} minutos para completar a prova\n` +
+        `• Total de questões: ${totalQuestions}\n` +
+        `• Nota mínima: ${minimumScore} acertos (60%)\n` +
         `• Após iniciar, NÃO poderá voltar até finalizar\n` +
         `• Esta é sua tentativa ${attempts + 1} de ${MAX_ATTEMPTS}\n` +
         `• As perguntas serão apresentadas em ordem aleatória\n\n` +
@@ -1003,6 +1008,8 @@ function startQuiz() {
     quizContent.innerHTML = '';
 
     const shuffledQuestions = shuffleArray(module.questions);
+    const totalQuestions = shuffledQuestions.length;
+    const minimumScore = Math.ceil(totalQuestions * 0.6);
 
     shuffledQuestions.forEach((q, index) => {
         const optionsWithIndex = q.options.map((opt, i) => ({ text: opt, isCorrect: i === q.correct }));
@@ -1077,13 +1084,19 @@ function stopTimer() {
 function submitQuiz() {
     stopTimer();
 
+    // Contar questões dinamicamente
+    const totalQuestions = document.querySelectorAll('.question').length;
+    
     let score = 0;
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < totalQuestions; i++) {
         const answer = document.querySelector(`input[name="q${i}"]:checked`);
         if (answer && answer.value === "1") score++;
     }
 
-    const passed = score >= 6;
+    // Calcular 60% do total de questões (arredonda pra cima)
+    const minimumScore = Math.ceil(totalQuestions * 0.6);
+    const passed = score >= minimumScore;
+    const percentage = Math.round((score / totalQuestions) * 100);
     const currentAttempts = userProgress[currentModule]?.attempts || 0;
 
     userProgress[currentModule] = {
@@ -1091,33 +1104,37 @@ function submitQuiz() {
         passed: passed,
         attempts: currentAttempts + 1,
         lastAttempt: new Date().toISOString(),
-        date: new Date().toLocaleDateString('pt-BR')
+        date: new Date().toLocaleDateString('pt-BR'),
+        totalQuestions: totalQuestions,
+        minimumScore: minimumScore,
+        percentage: percentage
     };
 
     const urlParams = new URLSearchParams(window.location.search);
     const modulesParam = urlParams.get('modulos');
-    const storageKey = `training_progress_${modulesParam || 'default'}`;
+    const companySlug = companyName ? companyName.toLowerCase().replace(/[^a-z0-9]/g, '_') : 'default';
+    const storageKey = `training_progress_${companySlug}_${modulesParam || 'default'}`;
     localStorage.setItem(storageKey, JSON.stringify(userProgress));
 
     saveClientData();
 
     document.getElementById('quiz-section').style.display = 'none';
     document.getElementById('result-section').style.display = 'block';
-    document.getElementById('score').textContent = `${score}/10`;
+    document.getElementById('score').textContent = `${score}/${totalQuestions}`;
 
     let feedback = '';
     let certificateHTML = '';
     const remainingAttempts = MAX_ATTEMPTS - userProgress[currentModule].attempts;
 
     if (passed) {
-        feedback = '🎉 Parabéns! Você foi aprovado neste módulo!';
-        certificateHTML = generateCertificate(score);
+        feedback = `🎉 Parabéns! Você foi aprovado neste módulo com ${percentage}% de aproveitamento!`;
+        certificateHTML = generateCertificate(score, totalQuestions, percentage);
         document.getElementById('printBtn').style.display = 'inline-block';
     } else if (remainingAttempts > 0) {
-        feedback = `📚 Você não atingiu a nota mínima (6 acertos). Você ainda tem ${remainingAttempts} tentativa(s). Revise o conteúdo e tente novamente.`;
+        feedback = `📚 Você não atingiu a nota mínima (${minimumScore} acertos - 60%). Você ainda tem ${remainingAttempts} tentativa(s). Revise o conteúdo e tente novamente.`;
         document.getElementById('printBtn').style.display = 'none';
     } else {
-        feedback = '❌ Você não atingiu a nota mínima e esgotou todas as tentativas para este módulo.';
+        feedback = `❌ Você não atingiu a nota mínima (${minimumScore} acertos - 60%) e esgotou todas as tentativas para este módulo.`;
         document.getElementById('printBtn').style.display = 'none';
     }
 
@@ -1130,7 +1147,7 @@ function submitQuiz() {
 // 13. CERTIFICADOS
 // ============================================
 
-function generateCertificate(score) {
+function generateCertificate(score, totalQuestions, percentage) {
     const date = new Date().toLocaleDateString('pt-BR');
     const module = trainingModules[currentModule];
     const displayName = companyName || 'o colaborador';
@@ -1142,7 +1159,7 @@ function generateCertificate(score) {
             <p class="company">${displayName}</p>
             <p>concluiu com êxito o treinamento de</p>
             <p><strong>${module.title}</strong></p>
-            <p>com aproveitamento de <strong>${score}/10 (${(score/10*100)}%)</strong></p>
+            <p>com aproveitamento de <strong>${score}/${totalQuestions} (${percentage}%)</strong></p>
             <p style="margin-top: 30px;">Data: ${date}</p>
             <p style="margin-top: 20px; font-size: 14px; color: #6b7280;">Fidúcia Academy</p>
         </div>
@@ -1205,7 +1222,9 @@ function init() {
         activeModules = Object.keys(trainingModules);
     }
 
-    const storageKey = `training_progress_${modulesParam || 'default'}`;
+    // Criar chave única combinando módulos + empresa
+    const companySlug = companyName ? companyName.toLowerCase().replace(/[^a-z0-9]/g, '_') : 'default';
+    const storageKey = `training_progress_${companySlug}_${modulesParam || 'default'}`;
     const savedProgress = localStorage.getItem(storageKey);
     if (savedProgress) {
         userProgress = JSON.parse(savedProgress);
